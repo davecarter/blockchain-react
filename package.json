@@ -1,20 +1,43 @@
 {
   "name": "blockchain-react",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.1.0",
+  "description": "A Blockchain Project build with JavaScript and ReactJS",
+  "main": "src/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "sui-bundler build -C",
+    "start": "sui-bundler dev",
+    "co": "sui-mono commit",
+    "check:release": "sui-mono check",
+    "release": "sui-mono release"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/davecarter/blockchain-react.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["Blockchain", "javascript", "ReactJS", "SUItools"],
+  "author": "David Garcia",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/davecarter/blockchain-react/issues"
   },
-  "homepage": "https://github.com/davecarter/blockchain-react#readme"
+  "homepage": "https://github.com/davecarter/blockchain-react#readme",
+  "eslintConfig": {
+    "extends": [
+      "./node_modules/@s-ui/lint/eslintrc.js"
+    ]
+  },
+  "prettier": "./node_modules/@s-ui/lint/.prettierrc.js",
+  "stylelint": {
+    "extends": "./node_modules/@s-ui/lint/stylelint.config.js"
+  },
+  "devDependencies": {
+    "@s-ui/bundler": "5",
+    "@s-ui/mono": "1",
+    "babel-preset-sui": "3"
+  },
+  "dependencies": {
+    "react": "16.12.0",
+    "react-dom": "16.12.0",
+    "react-router-dom": "5.1.2"
+  }
 }
