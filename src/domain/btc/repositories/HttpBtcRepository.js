@@ -7,9 +7,11 @@ export class HttpBtcRepository extends BtcRepository {
     this._mapper = mapper
   }
 
-  async getCurrentPrice({currency}) {
+  async getCurrentPrice({getCurrencyBtcRequest}) {
     const {API_URL_COINDESK} = this._config
-    const endPoint = `${API_URL_COINDESK}${currency}`
+    const currencyBtcRequest = getCurrencyBtcRequest.currency().value()
+    const endPoint = `${API_URL_COINDESK}${currencyBtcRequest}`
+
     return window
       .fetch(endPoint)
       .then(response => response.json())
