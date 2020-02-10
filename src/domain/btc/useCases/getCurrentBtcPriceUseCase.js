@@ -5,16 +5,12 @@ export class GetCurrentBtcPriceUseCase {
   }
 
   async execute({currency}) {
-    const {time, disclaimer, eur} = await this._repository.getCurrentPrice({
+    const btcCurrencyEntity = await this._repository.getCurrentPrice({
       getCurrencyBtcRequest: await this._getCurrencyBtcRequestFactory({
         currency
       })
     })
 
-    return {
-      time,
-      disclaimer,
-      eur
-    }
+    return btcCurrencyEntity.toJSON()
   }
 }
