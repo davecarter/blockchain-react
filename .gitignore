@@ -145,3 +145,5 @@ public/
 *.scss.map
 
 # End of https://www.gitignore.io/api/git,node,sass,macos
+
+.now
