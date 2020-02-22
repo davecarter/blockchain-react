@@ -8,7 +8,8 @@
     "start": "sui-bundler dev",
     "co": "sui-mono commit",
     "check:release": "sui-mono check",
-    "release": "sui-mono release"
+    "release": "sui-mono release",
+    "now-build": "npm run build"
   },
   "repository": {
     "type": "git",
