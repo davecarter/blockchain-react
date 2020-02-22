@@ -10,19 +10,18 @@ export class FromApiResponseToBtcEntityMapper {
     return new Intl.NumberFormat(LOCALE[countryCode], {
       style: 'currency',
       currency: code,
-      minimumFractionDigits: 0,
-      useGrouping: true
+      minimumFractionDigits: 0
     }).format(parseInt(rate_float))
   }
 
-  async map(apiResponse) {
+  map(apiResponse) {
     const {EUR, USD} = apiResponse?.bpi
 
     return this._btcCurrencyEntityFactory({
       time: apiResponse?.time?.updated,
       disclaimer: apiResponse?.disclaimer,
-      eur: await this.formatCurrency(EUR, 'es'),
-      usd: await this.formatCurrency(USD, 'us')
+      eur: this.formatCurrency(EUR, 'es'),
+      usd: this.formatCurrency(USD, 'us')
     })
   }
 }
