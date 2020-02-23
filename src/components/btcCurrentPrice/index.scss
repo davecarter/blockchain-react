@@ -1,0 +1,8 @@
+.btcCurrentPrice {
+  background: $c-primary;
+  border-bottom: 1px solid darken($c-primary, 10%);
+  border-top: 1px solid darken($c-primary, 10%);
+  color: white;
+  padding: 12px;
+  text-align: right;
+}

@@ -124,7 +124,7 @@ typings/
 .nuxt
 
 # react / gatsby 
-public/
+dist/
 
 # vuepress build output
 .vuepress/dist
@@ -145,3 +145,5 @@ public/
 *.scss.map
 
 # End of https://www.gitignore.io/api/git,node,sass,macos
+
+.now
