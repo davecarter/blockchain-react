@@ -14,13 +14,21 @@ export class FromApiResponseToBtcEntityMapper {
     }).format(parseInt(rate_float))
   }
 
+  setParams(currency) {
+    this._currency = currency
+    return this
+  }
+
   map(apiResponse) {
-    const {EUR, USD} = apiResponse?.bpi
+    // eslint-disable-next-line no-debugger
+    debugger
+    const {USD} = apiResponse?.bpi
+    const {EUR} = apiResponse?.bpi?.this._currency
 
     return this._btcCurrencyEntityFactory({
       time: apiResponse?.time?.updated,
       disclaimer: apiResponse?.disclaimer,
-      eur: this.formatCurrency(EUR, 'es'),
+      currency: this.formatCurrency(, 'es'),
       usd: this.formatCurrency(USD, 'us')
     })
   }
