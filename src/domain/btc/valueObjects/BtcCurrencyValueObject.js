@@ -1,4 +1,4 @@
-const __VALID_CURRENCIES__ = ['EUR', 'USD']
+const __VALID_CURRENCIES__ = ['EUR', 'USD', 'ARS', 'GBP']
 
 export class BtcCurrencyValueObject {
   constructor({currency}) {

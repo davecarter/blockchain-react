@@ -1,6 +1,8 @@
 const LOCALE = {
   es: 'es-ES',
-  us: 'en-US'
+  us: 'en-US',
+  uk: 'en-GB',
+  ar: 'es-AR'
 }
 
 const config = {
