@@ -10,7 +10,7 @@ export const BtcCurrentPrice = () => {
   useEffect(() => {
     domain
       .get('get_btc_current_price_use_case')
-      .execute({currency: 'EUR'})
+      .execute({currency: 'ARS'})
       .then(BtcCurrentPriceResult => {
         const {eur, usd} = BtcCurrentPriceResult
         setEur(eur)
