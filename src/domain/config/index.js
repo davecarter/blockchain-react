@@ -1,8 +1,8 @@
 const LOCALE = {
-  es: 'es-ES',
-  us: 'en-US',
-  uk: 'en-GB',
-  ar: 'es-AR'
+  EUR: 'es-ES',
+  USD: 'en-US',
+  GBP: 'en-GB',
+  ARS: 'es-AR'
 }
 
 const config = {

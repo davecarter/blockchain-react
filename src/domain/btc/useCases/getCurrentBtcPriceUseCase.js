@@ -1,16 +1,18 @@
 export class GetCurrentBtcPriceUseCase {
-  constructor({repository, getCurrencyBtcRequestFactory}) {
+  constructor({repository, fiatCurrencyCodeValueObjectFactory}) {
     this._repository = repository
-    this._getCurrencyBtcRequestFactory = getCurrencyBtcRequestFactory
+    this._fiatCurrencyCodeValueObjectFactory = fiatCurrencyCodeValueObjectFactory
   }
 
-  async execute({currency}) {
-    const btcCurrencyEntity = await this._repository.getCurrentPrice({
-      getCurrencyBtcRequest: await this._getCurrencyBtcRequestFactory({
-        currency
-      })
-    })
+  async execute({fiatCurrencyCode}) {
+    const btcCryptoCurrencyValueObject = await this._repository.getCurrentPrice(
+      {
+        fiatCurrencyCodeVO: this._fiatCurrencyCodeValueObjectFactory({
+          fiatCurrencyCode
+        })
+      }
+    )
 
-    return btcCurrencyEntity.toJSON()
+    return btcCryptoCurrencyValueObject.toJSON()
   }
 }

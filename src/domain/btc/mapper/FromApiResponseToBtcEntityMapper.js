@@ -1,35 +1,32 @@
+/* eslint-disable camelcase */
 export class FromApiResponseToBtcEntityMapper {
-  constructor({config, btcCurrencyEntityFactory}) {
+  constructor({config, btcCryptoCurrencyValueObjectFactory}) {
     this._config = config
-    this._btcCurrencyEntityFactory = btcCurrencyEntityFactory
+    this._btcCryptoCurrencyValueObjectFactory = btcCryptoCurrencyValueObjectFactory
   }
 
   // eslint-disable-next-line camelcase
-  formatCurrency = ({rate_float, code}, countryCode) => {
+  formatCurrency = (rawValue, fiatCurrencyCode) => {
     const {LOCALE} = this._config
-    return new Intl.NumberFormat(LOCALE[countryCode], {
+    return new Intl.NumberFormat(LOCALE[fiatCurrencyCode], {
       style: 'currency',
-      currency: code,
+      currency: fiatCurrencyCode,
       minimumFractionDigits: 0
-    }).format(parseInt(rate_float))
+    }).format(parseInt(rawValue))
   }
 
-  setParams(currency) {
-    this._currency = currency
+  setParams(fiatCurrencyCode) {
+    this._fiatCurrencyCode = fiatCurrencyCode
     return this
   }
 
   map(apiResponse) {
-    // eslint-disable-next-line no-debugger
-    debugger
-    const {USD} = apiResponse?.bpi
-    const {EUR} = apiResponse?.bpi?.this._currency
+    const rawValue = apiResponse?.bpi[this._fiatCurrencyCode].rate_float
 
-    return this._btcCurrencyEntityFactory({
-      time: apiResponse?.time?.updated,
-      disclaimer: apiResponse?.disclaimer,
-      currency: this.formatCurrency(, 'es'),
-      usd: this.formatCurrency(USD, 'us')
+    return this._btcCryptoCurrencyValueObjectFactory({
+      value: this.formatCurrency(rawValue, this._fiatCurrencyCode),
+      fiatCurrencyCode: this._fiatCurrencyCode,
+      updated: apiResponse?.time?.updated
     })
   }
 }
