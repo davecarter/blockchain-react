@@ -4,26 +4,32 @@ import {BtcCurrencyDisplay} from '../btcCurrencyDisplay'
 
 export const BtcCurrentPrice = () => {
   const baseClass = 'btcCurrentPrice'
-  const [eur, setEur] = useState('')
-  const [usd, setUsd] = useState('')
+  const [currentPriceValue, setCurrentPriceValue] = useState('')
+  const [fiatCurrencyCode, setFiatCurrencyCode] = useState('')
+  const [updated, setUpdated] = useState('')
 
   useEffect(() => {
     domain
       .get('get_btc_current_price_use_case')
-      .execute({currency: 'ARS'})
+      .execute({fiatCurrencyCode: 'EUR'})
       .then(BtcCurrentPriceResult => {
-        const {eur, usd} = BtcCurrentPriceResult
-        setEur(eur)
-        setUsd(usd)
+        const {value, fiatCurrencyCode, updated} = BtcCurrentPriceResult
+        setCurrentPriceValue(value)
+        setFiatCurrencyCode(fiatCurrencyCode)
+        setUpdated(updated)
       })
       .catch(BtcCurrentPriceError =>
         window.console.error('error', BtcCurrentPriceError)
       )
-  }, [eur])
+  }, [])
 
   return (
     <div className={baseClass}>
-      <BtcCurrencyDisplay eur={eur} usd={usd} />
+      <BtcCurrencyDisplay
+        currentPriceValue={currentPriceValue}
+        fiatCurrencyCode={fiatCurrencyCode}
+        updated={updated}
+      />
     </div>
   )
 }
