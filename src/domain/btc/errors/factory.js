@@ -1,5 +1,9 @@
-import {InvalidCurrencyError} from './InvalidCurrencyError'
+import {InvalidFiatCurrencyCodeError} from './InvalidFiatCurrencyCodeError'
+import {InvalidValueError} from './InvalidValueError'
 
 export class BtcErrorsFactory {
-  static invalidCurrencyError = msg => new InvalidCurrencyError(msg)
+  static invalidFiatCurrencyCodeError = msg =>
+    new InvalidFiatCurrencyCodeError(msg)
+
+  static invalidValueError = msg => new InvalidValueError(msg)
 }
