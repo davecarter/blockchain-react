@@ -1,37 +1,25 @@
-import React, {useState} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 
-const BtcCurrencyDisplay = ({eur, usd}) => {
+const BtcCurrencyDisplay = ({currentPriceValue, updated}) => {
   const baseClass = 'btcCurrencyDisplay'
-  const [defaultDisplayedCurrency, setDefaultDisplayedCurrency] = useState(
-    'EUR'
-  )
-  const handleDisplayedCurrency = () => {
-    defaultDisplayedCurrency === 'EUR'
-      ? setDefaultDisplayedCurrency('USD')
-      : setDefaultDisplayedCurrency('EUR')
-  }
 
   return (
-    <>
-      <span className={`${baseClass}-heading`}>Bitcoin current Price:</span>
-      <span
-        onClick={handleDisplayedCurrency}
-        className={`${baseClass}-valueContainer`}
-      >
-        {defaultDisplayedCurrency === 'EUR' ? (
-          <span className={`${baseClass}-priceEUR`}>{eur}</span>
-        ) : (
-          <span className={`${baseClass}-priceUSD`}>{usd}</span>
-        )}
+    <div className={baseClass}>
+      <h3 className={`${baseClass}-heading`}>
+        Bitcoin <span className={`${baseClass}-code`}>BTC</span>
+      </h3>
+      <span className={`${baseClass}-valueContainer`}>
+        <span className={`${baseClass}-priceEUR`}>{currentPriceValue}</span>
+        <span className={`${baseClass}-updated`}>{updated}</span>
       </span>
-    </>
+    </div>
   )
 }
 
 BtcCurrencyDisplay.propTypes = {
-  eur: PropTypes.string,
-  usd: PropTypes.string
+  currentPriceValue: PropTypes.string,
+  updated: PropTypes.string
 }
 
 export {BtcCurrencyDisplay}

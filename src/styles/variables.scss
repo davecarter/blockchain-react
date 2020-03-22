@@ -1,3 +1,9 @@
 $c-primary: #ff9900;
 $text-color: #444444;
 $text-font-stack: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+$fz-base: 16px;
+$fz-small: $fz-base * 0.9;
+$fz-medium: $fz-base * 1.2;
+$fz-large: $fz-base * 1.5;
+$fz-extralarge: $fz-base * 2.5;

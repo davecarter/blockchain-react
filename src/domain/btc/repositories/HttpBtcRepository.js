@@ -7,14 +7,14 @@ export class HttpBtcRepository extends BtcRepository {
     this._mapper = mapper
   }
 
-  async getCurrentPrice({getCurrencyBtcRequest}) {
+  async getCurrentPrice({fiatCurrencyCodeVO}) {
     const {API_URL_COINDESK} = this._config
-    const currencyBtcRequest = getCurrencyBtcRequest.currency().value()
-    const endPoint = `${API_URL_COINDESK}${currencyBtcRequest}`
+    const fiatCurrencyCode = fiatCurrencyCodeVO.fiatCurrencyCode()
+    const endPoint = `${API_URL_COINDESK}${fiatCurrencyCode}.json`
 
     return window
       .fetch(endPoint)
       .then(response => response.json())
-      .then(data => this._mapper.map(data))
+      .then(data => this._mapper.setParams(fiatCurrencyCode).map(data))
   }
 }

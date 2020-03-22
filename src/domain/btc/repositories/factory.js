@@ -5,6 +5,6 @@ export class BtcRepositoryFactory {
   static httpBtcRepository = ({config}) =>
     new HttpBtcRepository({
       config,
-      mapper: BtcMapperFactory.fromApiResponseToBtcEntityMapper()
+      mapper: BtcMapperFactory.fromApiResponseToBtcEntityMapper({config})
     })
 }

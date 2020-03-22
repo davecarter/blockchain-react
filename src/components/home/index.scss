@@ -1,0 +1,28 @@
+.homePage {
+  &-Header {
+    background-color: darken($c-primary, $amount: 20);
+    display: flex;
+    justify-content: space-between;
+    padding: 0 48px;
+
+    &Title {
+      color: white;
+      font-size: $fz-small;
+      font-weight: lighter;
+      margin: 0;
+      padding: 8px;
+    }
+
+    &Author {
+      font-size: $fz-small;
+      color: lighten(#1da1f2, $amount: 30);
+      font-weight: bold;
+      margin: 0;
+      padding: 8px;
+      text-decoration: none;
+      &:hover {
+        color: lighten(#1da1f2, $amount: 40);
+      }
+    }
+  }
+}

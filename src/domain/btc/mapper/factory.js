@@ -1,11 +1,11 @@
 import {FromApiResponseToBtcEntityMapper} from './FromApiResponseToBtcEntityMapper'
-import {BtcCurrencyEntityFactory} from '../entities/factory'
-import {config} from '../../config'
+import {CurrenciesValueObjectFactory} from '../valueObjects/factory'
 
 export class BtcMapperFactory {
-  static fromApiResponseToBtcEntityMapper = () =>
+  static fromApiResponseToBtcEntityMapper = ({config}) =>
     new FromApiResponseToBtcEntityMapper({
       config,
-      btcCurrencyEntityFactory: BtcCurrencyEntityFactory.btcCurrencyEntity
+      btcCryptoCurrencyValueObjectFactory:
+        CurrenciesValueObjectFactory.btcCryptoCurrencyValueObject
     })
 }
