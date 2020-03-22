@@ -3,6 +3,7 @@
   border-bottom: 1px solid darken($c-primary, 10%);
   border-top: 1px solid darken($c-primary, 10%);
   color: white;
-  padding: 12px;
+  display: flex;
+  padding: 8px 48px;
   text-align: right;
 }
