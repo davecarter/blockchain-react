@@ -1,0 +1,53 @@
+.block {
+  background-color: #eeeeee;
+  border: 1px gray solid;
+  display: flex;
+  flex-direction: column;
+  margin: 24px 48px;
+  padding: 24px;
+  font-size: $fz-small;
+
+  &-heading {
+    margin: 0 0 16px;
+  }
+
+  label {
+    cursor: pointer;
+  }
+
+  &-label {
+    &Column {
+      padding: 12px 0;
+      vertical-align: top;
+      width: 20%;
+    }
+
+    &Data {
+      padding: 12px 0;
+      vertical-align: top;
+      width: 80%;
+    }
+  }
+
+  &-data {
+    min-height: 150px;
+    padding: 8px;
+    width: 100%;
+  }
+
+  &-button {
+    cursor: pointer;
+    background-color: #69b3ff;
+    font-weight: bold;
+    padding: 12px;
+    max-width: 250px;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:hover {
+      background-color: lighten($color: #69b3ff, $amount: 3);
+    }
+  }
+}
