@@ -15,6 +15,17 @@ export class FromApiResponseToBtcEntityMapper {
     }).format(parseInt(rawValue))
   }
 
+  formatDate = (rawDate, fiatCurrencyCode) => {
+    const {LOCALE} = this._config
+    const date = new Date(rawDate)
+
+    return date.toLocaleDateString(LOCALE[fiatCurrencyCode], {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    })
+  }
+
   setParams(fiatCurrencyCode) {
     this._fiatCurrencyCode = fiatCurrencyCode
     return this
@@ -22,11 +33,11 @@ export class FromApiResponseToBtcEntityMapper {
 
   map(apiResponse) {
     const rawValue = apiResponse?.bpi[this._fiatCurrencyCode].rate_float
-
+    const rawDate = apiResponse?.time?.updatedISO
     return this._btcCryptoCurrencyValueObjectFactory({
       value: this.formatCurrency(rawValue, this._fiatCurrencyCode),
       fiatCurrencyCode: this._fiatCurrencyCode,
-      updated: apiResponse?.time?.updated
+      updated: this.formatDate(rawDate, this._fiatCurrencyCode)
     })
   }
 }
