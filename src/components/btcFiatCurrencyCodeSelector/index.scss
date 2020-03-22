@@ -1,5 +1,5 @@
 .btcFiatCurrencyCodeSelector {
-  margin-top: 48px;
+  margin-top: 0;
   margin-left: 12px;
   padding: 0;
   position: relative;
@@ -37,7 +37,6 @@
   &-dropDown {
     &Container {
       cursor: pointer;
-      fill: white;
       position: absolute;
       right: -24px;
       top: -4px;
@@ -45,7 +44,7 @@
 
     &Selector {
       list-style-type: none;
-      margin: 4px -30px 0 0px;
+      margin: 8px -4px 0 0;
       background-color: rgba(0, 0, 0, 0.5);
       padding: 0;
     }
@@ -53,11 +52,20 @@
     &Item {
       cursor: pointer;
       font-size: $fz-small;
-      padding: 4px 24px;
+      padding: 1px 44px;
 
-      &:hover {
-        background-color: rgba(255, 255, 255, 0.2);
+      &:hover,
+      &--active {
+        background-color: rgba(255, 255, 255, 0.3);
       }
+    }
+  }
+
+  &-chevron {
+    fill: white;
+
+    &--inverted {
+      transform: scaleY(-1);
     }
   }
 }
