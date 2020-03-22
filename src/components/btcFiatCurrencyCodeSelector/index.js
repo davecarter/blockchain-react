@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+import cx from 'classnames'
 import PropTypes from 'prop-types'
 
 const BtcFiatCurrencyCodeSelector = ({onChange, currentCurrencyCode}) => {
@@ -11,6 +12,10 @@ const BtcFiatCurrencyCodeSelector = ({onChange, currentCurrencyCode}) => {
 
   useEffect(() => setIsVisible(false), [currentCurrencyCode])
 
+  const chevronClass = cx(`${baseClass}-chevron`, {
+    [`${baseClass}-chevron--inverted`]: isVisible
+  })
+
   return (
     <div className={baseClass}>
       <span className={`${baseClass}-currentFiat${currentCurrencyCode}`}>
@@ -18,10 +23,11 @@ const BtcFiatCurrencyCodeSelector = ({onChange, currentCurrencyCode}) => {
       </span>
       <div
         className={`${baseClass}-dropDownContainer`}
-        onClick={() => setIsVisible(true)}
+        onClick={() => setIsVisible(!isVisible)}
       >
         <svg
-          className={`${baseClass}-chevron`}
+          id="dropDownSelector"
+          className={chevronClass}
           width="18"
           height="8"
           viewBox="0 0 22 11"
@@ -30,15 +36,21 @@ const BtcFiatCurrencyCodeSelector = ({onChange, currentCurrencyCode}) => {
         </svg>
         {isVisible && (
           <ul className={`${baseClass}-dropDownSelector`}>
-            {fiatCurrencyCodes.map(item => (
-              <li
-                key={baseClass + item}
-                className={`${baseClass}-dropDownItem`}
-                onClick={() => _handleClick(item)}
-              >
-                {item}
-              </li>
-            ))}
+            {fiatCurrencyCodes.map(item => {
+              const activeItem = cx(`${baseClass}-dropDownItem`, {
+                [`${baseClass}-dropDownItem--active`]:
+                  currentCurrencyCode === item
+              })
+              return (
+                <li
+                  key={baseClass + item}
+                  className={activeItem}
+                  onClick={() => _handleClick(item)}
+                >
+                  {item}
+                </li>
+              )
+            })}
           </ul>
         )}
       </div>
