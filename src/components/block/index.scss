@@ -8,7 +8,9 @@
   font-size: $fz-small;
 
   &-heading {
-    margin: 0 0 16px;
+    font-size: $fz-large;
+    margin: 0;
+    text-align: left;
   }
 
   label {
