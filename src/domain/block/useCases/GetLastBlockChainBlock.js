@@ -1,12 +1,17 @@
 export class GetLastBlockChainBlock {
-  constructor({blockValueObjectFactory}) {
-    this._blockValueObjectFactory = blockValueObjectFactory
+  constructor({blockRequestFactory, repository}) {
+    this._blockRequestFactory = blockRequestFactory
+    this._repository = repository
   }
 
-  execute({blockNumber}) {
-    const BlockValueObject = this._blockValueObjectFactory({
-      blockId: blockNumber
+  execute({blockNumber, previousHash}) {
+    const blockValueObject = this._repository.getBlockChainData({
+      blockRequest: this._blockRequestFactory({
+        blockId: blockNumber,
+        previousHash
+      })
     })
-    return BlockValueObject.toJSON()
+
+    return blockValueObject.toJSON()
   }
 }
