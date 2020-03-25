@@ -1,10 +1,12 @@
-import {GetLastBlockChainBlock} from './GetLastBlockChainBlock'
-import {BlockValueObjectsFactory} from '../valueObjects/factory'
+import {GetLastBlockChainBlockUseCase} from './getLastBlockChainBlockUseCase'
+import {BlockRequestsFactory} from '../requests/factory'
+import {BlockRepositoryFactory} from '../repositories/factory'
 
 export class BlockUseCasesFactory {
-  static getLastBlockChainBlock = ({config}) =>
-    new GetLastBlockChainBlock({
+  static getLastBlockChainBlockUseCase = ({config}) =>
+    new GetLastBlockChainBlockUseCase({
       config,
-      blockValueObjectFactory: BlockValueObjectsFactory.blockValueObject
+      repository: BlockRepositoryFactory.httpBlockRepository({config}),
+      blockRequestFactory: BlockRequestsFactory.blockRequest
     })
 }

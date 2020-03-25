@@ -6,9 +6,11 @@ const useCases = {
   get_btc_current_price_use_case: BtcUseCasesFactory.getCurrentBtcPriceUseCase({
     config
   }),
-  get_last_blockchain_block: BlockUseCasesFactory.getLastBlockChainBlock({
-    config
-  })
+  get_last_blockchain_block_use_case: BlockUseCasesFactory.getLastBlockChainBlockUseCase(
+    {
+      config
+    }
+  )
 }
 
 export const domain = {

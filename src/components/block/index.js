@@ -1,64 +1,117 @@
 import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import {domain} from '../../domain/index'
+import cx from 'classnames'
 
-const Block = ({blockNumber}) => {
+import {SHA256} from 'crypto-js'
+
+const Block = ({blockNumber, previousHash}) => {
   const baseClass = 'block'
   const [blockId, setBlockId] = useState(0)
   const [creationDate, setCreationDate] = useState(0)
-  const [previousHash, setPreviousHash] = useState(0)
   const [blockData, setBlockData] = useState('')
-  const [currentHash, setCurrentHash] = useState(0)
+  const [minedHash, setMinedHash] = useState(0)
+  const [currentDifficulty, setCurrentDifficulty] = useState(0)
+  const [currentNonce, setCurrentNonce] = useState(0)
+  const [isMining, setIsMining] = useState(false)
+
+  let nonce = 24
+  let currentHash = '0'
+
+  const isMiningClass = cx(baseClass, {
+    [`${baseClass}--mining`]: isMining
+  })
 
   useEffect(() => {
-    const {blockId, creationDate, blockData} = domain
-      .get('get_last_blockchain_block')
-      .execute({blockNumber})
+    const {blockId, creationDate, blockData, currentDifficulty} = domain
+      .get('get_last_blockchain_block_use_case')
+      .execute({blockNumber, previousHash})
     setBlockId(blockId)
     setCreationDate(creationDate)
-    setPreviousHash(previousHash)
     setBlockData(blockData)
-  }, [blockNumber, blockData, previousHash])
+    setCurrentDifficulty(currentDifficulty)
+  }, [blockNumber, previousHash])
+
+  const handleBlockData = evt => setBlockData(evt.target.value)
+
+  const handleMining = () => {
+    setIsMining(true)
+    setTimeout(mineValidHash, 1000)
+  }
+
+  const mineValidHash = () => {
+    while (!currentHash.startsWith(currentDifficulty)) {
+      nonce++
+      currentHash = createHash()
+    }
+    setMinedHash(currentHash)
+    setCurrentNonce(nonce)
+    setTimeout(setIsMining(false), 1000)
+  }
+
+  const createHash = () =>
+    SHA256(blockId + creationDate + blockData + nonce).toString()
 
   return (
-    <div className={baseClass}>
-      <h2 className={`${baseClass}-heading`}>BLOCK #{blockId}</h2>
+    <div className={isMiningClass}>
       <table>
-        <tr>
-          <td className={`${baseClass}-labelColumn`}>Creation date:</td>
-          <td className={`${baseClass}-labelData`}>{creationDate}</td>
-        </tr>
-        <tr>
-          <td className={`${baseClass}-labelColumn`}>Previous hash:</td>
-          <td className={`${baseClass}-labelData`}>{previousHash}</td>
-        </tr>
-        <tr>
-          <td className={`${baseClass}-labelColumn`}>
-            <label htmlFor="blockData">Block data:</label>
-          </td>
-          <td>
-            <textarea
-              id="blockData"
-              className={`${baseClass}-data`}
-              value={blockData}
-            />
-          </td>
-        </tr>
-        <tr>
-          <td className={`${baseClass}-labelColumn`}>Current hash:</td>
-          <td className={`${baseClass}-labelData`}>{currentHash}</td>
-        </tr>
+        <thead>
+          <tr>
+            <th className={`${baseClass}-heading`}>BLOCK #{blockId}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td className={`${baseClass}-labelColumn`}>Creation date:</td>
+            <td className={`${baseClass}-labelData`}>{creationDate}</td>
+          </tr>
+          <tr>
+            <td className={`${baseClass}-labelColumn`}>Previous hash:</td>
+            <td className={`${baseClass}-labelData`}>{previousHash}</td>
+          </tr>
+          <tr>
+            <td className={`${baseClass}-labelColumn`}>
+              <label htmlFor="blockData">Block data:</label>
+            </td>
+            <td>
+              <textarea
+                id="blockData"
+                className={`${baseClass}-data`}
+                value={blockData}
+                onChange={handleBlockData}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td className={`${baseClass}-labelColumn`}>Current hash:</td>
+            <td className={`${baseClass}-labelData`}>{minedHash}</td>
+          </tr>
+          <tr>
+            <td className={`${baseClass}-labelColumn`}>Nonce:</td>
+            <td className={`${baseClass}-labelData`}>{currentNonce}</td>
+          </tr>
+          <tr>
+            <td className={`${baseClass}-labelColumn`}>Current difficulty:</td>
+            <td className={`${baseClass}-labelData`}>{currentDifficulty}</td>
+          </tr>
+        </tbody>
       </table>
 
-      <button className={`${baseClass}-button`}>Mine Block!</button>
+      <button className={`${baseClass}-button`} onClick={handleMining}>
+        Mine Block!
+      </button>
     </div>
   )
 }
 
 Block.propTypes = {
-  blockNumber: PropTypes.number
+  blockNumber: PropTypes.number,
+  previousHash: PropTypes.string
 }
 
-Block.defaultProps = {blockNumber: 0}
+Block.defaultProps = {
+  blockNumber: 0,
+  previousHash: 'Genesis'
+}
 
 export {Block}
