@@ -1,4 +1,4 @@
-export class GetLastBlockChainBlock {
+export class GetLastBlockChainBlockUseCase {
   constructor({blockRequestFactory, repository}) {
     this._blockRequestFactory = blockRequestFactory
     this._repository = repository

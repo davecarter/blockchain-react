@@ -7,6 +7,12 @@
   padding: 24px;
   font-size: $fz-small;
 
+  &--mining {
+    background-image: url('https://i.giphy.com/media/l3q2XB76CaWPggiNW/source.gif');
+    background-size: cover;
+    color: white;
+  }
+
   &-heading {
     font-size: $fz-large;
     margin: 0;
@@ -19,13 +25,13 @@
 
   &-label {
     &Column {
-      padding: 12px 0;
+      padding: 4px 0;
       vertical-align: top;
       width: 20%;
     }
 
     &Data {
-      padding: 12px 0;
+      padding: 4px 0;
       vertical-align: top;
       width: 80%;
     }
@@ -42,6 +48,7 @@
     background-color: #69b3ff;
     font-weight: bold;
     padding: 12px;
+    margin-top: 16px;
     max-width: 250px;
 
     &:focus {

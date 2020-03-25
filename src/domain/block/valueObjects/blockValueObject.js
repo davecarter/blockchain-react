@@ -4,15 +4,15 @@ export class BlockValueObject {
     creationDate,
     previousHash,
     blockData,
-    nonce,
-    currentHash
+    currentHash,
+    currentDifficulty
   }) {
     this._blockId = blockId
     this._previousHash = previousHash
     this._creationDate = creationDate
     this._blockData = blockData
-    this._nonce = nonce
     this._currentHash = currentHash
+    this._currentDifficulty = currentDifficulty
   }
 
   static validate({blockId, previousHash}) {
@@ -37,8 +37,8 @@ export class BlockValueObject {
       creationDate: this._creationDate,
       blockData: this._blockData,
       previousHash: this._previousHash,
-      nonce: this._nonce,
-      currentHash: this._currentHash
+      currentHash: this._currentHash,
+      currentDifficulty: this._currentDifficulty
     }
   }
 }

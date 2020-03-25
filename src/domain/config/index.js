@@ -11,9 +11,8 @@ const MOCKED_BLOCKCHAIN_DATA = [
     creationDate: Date.now(),
     previousHash: 'Genesis',
     blockData: 'Genesis Block',
-    nonce: 1,
-    currentHash: 0,
-    currentDifficulty: '00'
+    currentHash: '0',
+    currentDifficulty: '0000'
   }
 ]
 
