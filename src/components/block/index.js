@@ -1,17 +1,18 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import PropTypes from 'prop-types'
-import {domain} from '../../domain/index'
 import cx from 'classnames'
 
 import {SHA256} from 'crypto-js'
 
-const Block = ({blockNumber, previousHash}) => {
+const Block = ({
+  blockId,
+  previousHash,
+  blockData,
+  creationDate,
+  currentDifficulty,
+  hash
+}) => {
   const baseClass = 'block'
-  const [blockId, setBlockId] = useState(0)
-  const [creationDate, setCreationDate] = useState(0)
-  const [blockData, setBlockData] = useState('')
-  const [minedHash, setMinedHash] = useState(0)
-  const [currentDifficulty, setCurrentDifficulty] = useState(0)
   const [currentNonce, setCurrentNonce] = useState(0)
   const [isMining, setIsMining] = useState(false)
 
@@ -21,18 +22,6 @@ const Block = ({blockNumber, previousHash}) => {
   const isMiningClass = cx(baseClass, {
     [`${baseClass}--mining`]: isMining
   })
-
-  useEffect(() => {
-    const {blockId, creationDate, blockData, currentDifficulty} = domain
-      .get('get_last_blockchain_block_use_case')
-      .execute({blockNumber, previousHash})
-    setBlockId(blockId)
-    setCreationDate(creationDate)
-    setBlockData(blockData)
-    setCurrentDifficulty(currentDifficulty)
-  }, [blockNumber, previousHash])
-
-  const handleBlockData = evt => setBlockData(evt.target.value)
 
   const handleMining = () => {
     setIsMining(true)
@@ -44,7 +33,6 @@ const Block = ({blockNumber, previousHash}) => {
       nonce++
       currentHash = createHash()
     }
-    setMinedHash(currentHash)
     setCurrentNonce(nonce)
     setTimeout(setIsMining(false), 1000)
   }
@@ -78,13 +66,12 @@ const Block = ({blockNumber, previousHash}) => {
                 id="blockData"
                 className={`${baseClass}-data`}
                 value={blockData}
-                onChange={handleBlockData}
               />
             </td>
           </tr>
           <tr>
             <td className={`${baseClass}-labelColumn`}>Current hash:</td>
-            <td className={`${baseClass}-labelData`}>{minedHash}</td>
+            <td className={`${baseClass}-labelData`}>{hash}</td>
           </tr>
           <tr>
             <td className={`${baseClass}-labelColumn`}>Nonce:</td>
@@ -105,13 +92,12 @@ const Block = ({blockNumber, previousHash}) => {
 }
 
 Block.propTypes = {
-  blockNumber: PropTypes.number,
-  previousHash: PropTypes.string
-}
-
-Block.defaultProps = {
-  blockNumber: 0,
-  previousHash: 'Genesis'
+  blockId: PropTypes.number,
+  previousHash: PropTypes.number,
+  creationDate: PropTypes.number,
+  blockData: PropTypes.object,
+  currentDifficulty: PropTypes.number,
+  hash: PropTypes.number
 }
 
 export {Block}

@@ -1,3 +1,5 @@
+import {firebaseConfig} from './firebaseConfig'
+
 const LOCALE = {
   EUR: 'es-ES',
   USD: 'en-US',
@@ -19,7 +21,8 @@ const MOCKED_BLOCKCHAIN_DATA = [
 const config = {
   API_URL_COINDESK: 'https://api.coindesk.com/v1/bpi/currentprice/',
   LOCALE,
-  MOCKED_BLOCKCHAIN_DATA
+  MOCKED_BLOCKCHAIN_DATA,
+  FIREBASE: firebaseConfig
 }
 
 export {config}
