@@ -1,7 +1,7 @@
 import React from 'react'
 
 import {BtcCurrentPrice} from '../btcCurrentPrice'
-import {Block} from '../block'
+import {GenesisBlock} from '../genesisBlock'
 
 const HomePage = () => (
   <>
@@ -16,7 +16,7 @@ const HomePage = () => (
       </a>
     </header>
     <BtcCurrentPrice />
-    <Block />
+    <GenesisBlock />
   </>
 )
 
