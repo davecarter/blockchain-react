@@ -92,7 +92,6 @@ const Block = ({
 }
 
 Block.propTypes = {
-  key: PropTypes.string,
   blockId: PropTypes.number,
   previousHash: PropTypes.string,
   creationDate: PropTypes.number,
