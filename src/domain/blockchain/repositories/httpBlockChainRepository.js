@@ -6,12 +6,15 @@ export class HttpBlockChainRepository {
   }
 
   getBlockChainData() {
-    const docRef = this._firestore.collection('blockchain/blocklist')
+    const docRef = this._firestore.collection('blockchainreact')
     return docRef.get().then(doc => {
-      if (doc?.exists) {
-        const block = doc.data()
-        return block
-      }
+      const blocklist = []
+      doc.forEach(block => {
+        const blockData = block.data()
+        blocklist.push(blockData)
+      })
+
+      return blocklist
     })
   }
 

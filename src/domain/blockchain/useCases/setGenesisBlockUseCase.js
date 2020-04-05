@@ -6,12 +6,10 @@ export class SetGenesisBlockUseCase {
   }
 
   async execute({blockData}) {
-    const genesisblockValueObject = await this._repository.setGenesisBlock({
+    await this._repository.setGenesisBlock({
       genesisBlockData: this._blockRequestFactory({
         blockData
       })
     })
-
-    return genesisblockValueObject
   }
 }
