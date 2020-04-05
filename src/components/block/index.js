@@ -92,12 +92,13 @@ const Block = ({
 }
 
 Block.propTypes = {
+  key: PropTypes.string,
   blockId: PropTypes.number,
-  previousHash: PropTypes.number,
+  previousHash: PropTypes.string,
   creationDate: PropTypes.number,
-  blockData: PropTypes.object,
-  currentDifficulty: PropTypes.number,
-  hash: PropTypes.number
+  blockData: PropTypes.string,
+  currentDifficulty: PropTypes.string,
+  hash: PropTypes.string
 }
 
 export {Block}
