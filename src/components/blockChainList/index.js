@@ -11,6 +11,18 @@ const BlockChainList = () => {
   const genesisBlockData = config.GENESIS_BLOCK
 
   useEffect(() => {
+    const creationDate = new Date()
+    const localeDate = creationDate.toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    })
+
+    const blockData = {
+      ...genesisBlockData,
+      creationDate: localeDate
+    }
+
     domain
       .get('get_blockchain_use_case')
       .execute()
@@ -19,7 +31,7 @@ const BlockChainList = () => {
         if (data.length === 0) {
           domain
             .get('set_genesis_block_use_case')
-            .execute({blockData: genesisBlockData})
+            .execute({blockData})
             .then(data => setGenesisBlock(data))
         }
       })
