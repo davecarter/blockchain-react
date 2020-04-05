@@ -15,6 +15,7 @@ const Block = ({
   const baseClass = 'block'
   const [currentNonce, setCurrentNonce] = useState(0)
   const [isMining, setIsMining] = useState(false)
+  const [userData, setUserDate] = useState('')
 
   let nonce = 24
   let currentHash = '0'
@@ -27,6 +28,8 @@ const Block = ({
     setIsMining(true)
     setTimeout(mineValidHash, 1000)
   }
+
+  const handleChange = evt => setUserDate(evt.target.value)
 
   const mineValidHash = () => {
     while (!currentHash.startsWith(currentDifficulty)) {
@@ -64,8 +67,10 @@ const Block = ({
             <td>
               <textarea
                 id="blockData"
+                placeholder="type your data"
                 className={`${baseClass}-data`}
-                value={blockData}
+                value={userData}
+                onChange={handleChange}
               />
             </td>
           </tr>
@@ -94,7 +99,7 @@ const Block = ({
 Block.propTypes = {
   blockId: PropTypes.number,
   previousHash: PropTypes.string,
-  creationDate: PropTypes.number,
+  creationDate: PropTypes.string,
   blockData: PropTypes.string,
   currentDifficulty: PropTypes.string,
   hash: PropTypes.string

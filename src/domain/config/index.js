@@ -11,7 +11,6 @@ const GENESIS_BLOCK = {
   blockId: 0,
   creationDate: Date.now(),
   previousHash: '------- genesis block hash -------',
-  blockData: 'Genesis Block',
   hash: '0',
   currentDifficulty: '0000'
 }
