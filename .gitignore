@@ -126,6 +126,9 @@ typings/
 # react / gatsby 
 dist/
 
+# firebase
+src/domain/config/firebaseConfig.js
+
 # vuepress build output
 .vuepress/dist
 
