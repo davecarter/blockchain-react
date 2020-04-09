@@ -1,19 +1,21 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import PropTypes from 'prop-types'
-import {domain} from '../../domain/index'
 import cx from 'classnames'
 
 import {SHA256} from 'crypto-js'
 
-const Block = ({blockNumber, previousHash}) => {
+const Block = ({
+  blockId,
+  previousHash,
+  blockData,
+  creationDate,
+  currentDifficulty,
+  hash
+}) => {
   const baseClass = 'block'
-  const [blockId, setBlockId] = useState(0)
-  const [creationDate, setCreationDate] = useState(0)
-  const [blockData, setBlockData] = useState('')
-  const [minedHash, setMinedHash] = useState(0)
-  const [currentDifficulty, setCurrentDifficulty] = useState(0)
   const [currentNonce, setCurrentNonce] = useState(0)
   const [isMining, setIsMining] = useState(false)
+  const [userData, setUserDate] = useState('')
 
   let nonce = 24
   let currentHash = '0'
@@ -22,29 +24,18 @@ const Block = ({blockNumber, previousHash}) => {
     [`${baseClass}--mining`]: isMining
   })
 
-  useEffect(() => {
-    const {blockId, creationDate, blockData, currentDifficulty} = domain
-      .get('get_last_blockchain_block_use_case')
-      .execute({blockNumber, previousHash})
-    setBlockId(blockId)
-    setCreationDate(creationDate)
-    setBlockData(blockData)
-    setCurrentDifficulty(currentDifficulty)
-  }, [blockNumber, previousHash])
-
-  const handleBlockData = evt => setBlockData(evt.target.value)
-
   const handleMining = () => {
     setIsMining(true)
     setTimeout(mineValidHash, 1000)
   }
+
+  const handleChange = evt => setUserDate(evt.target.value)
 
   const mineValidHash = () => {
     while (!currentHash.startsWith(currentDifficulty)) {
       nonce++
       currentHash = createHash()
     }
-    setMinedHash(currentHash)
     setCurrentNonce(nonce)
     setTimeout(setIsMining(false), 1000)
   }
@@ -76,15 +67,16 @@ const Block = ({blockNumber, previousHash}) => {
             <td>
               <textarea
                 id="blockData"
+                placeholder="type your data"
                 className={`${baseClass}-data`}
-                value={blockData}
-                onChange={handleBlockData}
+                value={userData}
+                onChange={handleChange}
               />
             </td>
           </tr>
           <tr>
             <td className={`${baseClass}-labelColumn`}>Current hash:</td>
-            <td className={`${baseClass}-labelData`}>{minedHash}</td>
+            <td className={`${baseClass}-labelData`}>{hash}</td>
           </tr>
           <tr>
             <td className={`${baseClass}-labelColumn`}>Nonce:</td>
@@ -105,13 +97,12 @@ const Block = ({blockNumber, previousHash}) => {
 }
 
 Block.propTypes = {
-  blockNumber: PropTypes.number,
-  previousHash: PropTypes.string
-}
-
-Block.defaultProps = {
-  blockNumber: 0,
-  previousHash: 'Genesis'
+  blockId: PropTypes.number,
+  previousHash: PropTypes.string,
+  creationDate: PropTypes.string,
+  blockData: PropTypes.string,
+  currentDifficulty: PropTypes.string,
+  hash: PropTypes.string
 }
 
 export {Block}
