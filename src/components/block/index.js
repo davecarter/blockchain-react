@@ -2,49 +2,30 @@ import React, {useState} from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
 
-import {SHA256} from 'crypto-js'
-
 const Block = ({
   blockId,
   previousHash,
   blockData,
   creationDate,
   currentDifficulty,
-  hash
+  currentNonce,
+  hash,
+  mine,
+  isMined
 }) => {
   const baseClass = 'block'
-  const [currentNonce, setCurrentNonce] = useState(0)
   const [isMining, setIsMining] = useState(false)
   const [userData, setUserDate] = useState('')
 
-  let nonce = 24
-  let currentHash = '0'
-
-  const isMiningClass = cx(baseClass, {
-    [`${baseClass}--mining`]: isMining
+  const mineStatusClass = cx(baseClass, {
+    [`${baseClass}--mining`]: isMining,
+    [`${baseClass}--mined`]: isMined
   })
-
-  const handleMining = () => {
-    setIsMining(true)
-    setTimeout(mineValidHash, 1000)
-  }
 
   const handleChange = evt => setUserDate(evt.target.value)
 
-  const mineValidHash = () => {
-    while (!currentHash.startsWith(currentDifficulty)) {
-      nonce++
-      currentHash = createHash()
-    }
-    setCurrentNonce(nonce)
-    setTimeout(setIsMining(false), 1000)
-  }
-
-  const createHash = () =>
-    SHA256(blockId + creationDate + blockData + nonce).toString()
-
   return (
-    <div className={isMiningClass}>
+    <div className={mineStatusClass}>
       <table>
         <thead>
           <tr>
@@ -65,13 +46,22 @@ const Block = ({
               <label htmlFor="blockData">Block data:</label>
             </td>
             <td>
-              <textarea
-                id="blockData"
-                placeholder="type your data"
-                className={`${baseClass}-data`}
-                value={userData}
-                onChange={handleChange}
-              />
+              {isMined ? (
+                <input
+                  className={`${baseClass}-disabledData`}
+                  type="text"
+                  value={blockData}
+                  disabled
+                />
+              ) : (
+                <textarea
+                  id="blockData"
+                  placeholder="type your data"
+                  className={`${baseClass}-data`}
+                  value={userData}
+                  onChange={handleChange}
+                />
+              )}
             </td>
           </tr>
           <tr>
@@ -89,9 +79,11 @@ const Block = ({
         </tbody>
       </table>
 
-      <button className={`${baseClass}-button`} onClick={handleMining}>
-        Mine Block!
-      </button>
+      {!isMined && (
+        <button className={`${baseClass}-button`} onClick={mine}>
+          Mine Block!
+        </button>
+      )}
     </div>
   )
 }
@@ -102,7 +94,10 @@ Block.propTypes = {
   creationDate: PropTypes.string,
   blockData: PropTypes.string,
   currentDifficulty: PropTypes.string,
-  hash: PropTypes.string
+  currentNonce: PropTypes.number,
+  hash: PropTypes.string,
+  mine: PropTypes.func,
+  isMined: PropTypes.bool
 }
 
 export {Block}

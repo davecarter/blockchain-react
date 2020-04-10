@@ -13,6 +13,10 @@
     color: white;
   }
 
+  &--mined {
+    background-color: #e9ffd552;
+  }
+
   &-heading {
     font-size: $fz-large;
     margin: 0;
@@ -41,6 +45,11 @@
     min-height: 150px;
     padding: 8px;
     width: 100%;
+  }
+
+  &-disabledData {
+    border: none;
+    background-color: transparent;
   }
 
   &-button {
