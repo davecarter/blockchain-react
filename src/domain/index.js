@@ -9,7 +9,7 @@ const useCases = {
   get_blockchain_use_case: BlockUseCasesFactory.getBlockChainUseCase({
     config
   }),
-  set_genesis_block_use_case: BlockUseCasesFactory.setGenesisBlockUseCase({
+  set_block_use_case: BlockUseCasesFactory.setBlockUseCase({
     config
   })
 }

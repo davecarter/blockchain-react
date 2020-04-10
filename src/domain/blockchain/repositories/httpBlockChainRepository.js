@@ -18,9 +18,9 @@ export class HttpBlockChainRepository {
     })
   }
 
-  setGenesisBlock({genesisBlockData}) {
-    const blockData = genesisBlockData.blockData()
+  setBlock({blockData}) {
+    const block = blockData.value()
     const docRef = this._firestore.doc('blockchainreact/blockList')
-    return docRef.set({blockData}).then(doc => doc.id)
+    return docRef.set({block}).then(doc => doc.id)
   }
 }

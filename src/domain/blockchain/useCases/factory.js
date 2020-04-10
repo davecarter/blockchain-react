@@ -1,5 +1,5 @@
 import {GetBlockChainUseCase} from './getBlockChainUseCase'
-import {SetGenesisBlockUseCase} from './setGenesisBlockUseCase'
+import {SetBlockUseCase} from './setBlockUseCase'
 
 import {BlockRequestsFactory} from '../requests/factory'
 import {BlockChainRepositoryFactory} from '../repositories/factory'
@@ -14,8 +14,8 @@ export class BlockUseCasesFactory {
       blockRequestFactory: BlockRequestsFactory.blockRequest
     })
 
-  static setGenesisBlockUseCase = ({config}) =>
-    new SetGenesisBlockUseCase({
+  static setBlockUseCase = ({config}) =>
+    new SetBlockUseCase({
       config,
       repository: BlockChainRepositoryFactory.httpBlockChainRepository({
         config
