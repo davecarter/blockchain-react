@@ -4,8 +4,8 @@ export class GetBlockChainUseCase {
     this._repository = repository
   }
 
-  execute() {
-    const blockChainData = this._repository.getBlockChainData()
+  async execute() {
+    const blockChainData = await this._repository.getBlockChainData()
     return blockChainData
   }
 }

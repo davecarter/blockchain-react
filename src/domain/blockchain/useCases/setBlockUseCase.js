@@ -6,10 +6,12 @@ export class SetBlockUseCase {
   }
 
   async execute({blockData}) {
-    await this._repository.setBlock({
+    const block = await this._repository.setBlock({
       blockData: this._blockRequestFactory({
         blockData
       })
     })
+
+    return block
   }
 }

@@ -1,23 +1,23 @@
 export class BlockValueObject {
   constructor({
-    blockId,
+    id,
     creationDate,
     previousHash,
-    blockData,
+    userData,
     currentHash,
     currentDifficulty
   }) {
-    this._blockId = blockId
+    this._id = id
     this._previousHash = previousHash
     this._creationDate = creationDate
-    this._blockData = blockData
+    this._userData = userData
     this._currentHash = currentHash
     this._currentDifficulty = currentDifficulty
   }
 
-  static validate({blockId, previousHash}) {
-    if (typeof blockId !== 'number') {
-      throw new Error('Invalid BlockId, it *must* be a Number')
+  static validate({id, previousHash}) {
+    if (typeof id !== 'number') {
+      throw new Error('Invalid id, it *must* be a Number')
     }
 
     if (typeof previousHash === 'undefined') {
@@ -27,15 +27,15 @@ export class BlockValueObject {
     }
   }
 
-  blockId() {
-    return this._blockId
+  id() {
+    return this._id
   }
 
   toJSON() {
     return {
-      blockId: this.blockId(),
+      id: this.id(),
       creationDate: this._creationDate,
-      blockData: this._blockData,
+      userData: this._userData,
       previousHash: this._previousHash,
       currentHash: this._currentHash,
       currentDifficulty: this._currentDifficulty
