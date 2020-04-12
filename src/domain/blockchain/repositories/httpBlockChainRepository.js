@@ -1,7 +1,6 @@
 export class HttpBlockChainRepository {
-  constructor({config, mapper, firestore}) {
+  constructor({config, firestore}) {
     this._config = config
-    this._mapper = mapper
     this._firestore = firestore
   }
 
