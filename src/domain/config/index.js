@@ -8,11 +8,13 @@ const LOCALE = {
 }
 
 const GENESIS_BLOCK = {
-  blockId: 0,
+  id: 0,
   creationDate: Date.now(),
-  previousHash: '------- genesis block hash -------',
+  difficulty: '0000',
   hash: '0',
-  currentDifficulty: '0000'
+  isMined: false,
+  nonce: 1,
+  previousHash: '------- genesis block hash -------'
 }
 
 const config = {

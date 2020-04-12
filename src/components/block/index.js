@@ -1,108 +1,160 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
 
 import {SHA256} from 'crypto-js'
+import {domain} from '../../domain/index'
 
 const Block = ({
-  blockId,
-  previousHash,
-  blockData,
+  id,
   creationDate,
-  currentDifficulty,
-  hash
+  previousHash,
+  userData,
+  hash,
+  nonce,
+  difficulty,
+  isMined
 }) => {
   const baseClass = 'block'
-  const [currentNonce, setCurrentNonce] = useState(0)
-  const [isMining, setIsMining] = useState(false)
-  const [userData, setUserDate] = useState('')
 
-  let nonce = 24
-  let currentHash = '0'
+  const [currentId, setCurrentId] = useState(0)
+  const [currentPreviousHash, setCurrentPreviousHash] = useState('')
+  const [currentCreationDate, setCurrentCreationDate] = useState('')
+  const [currentHash, setCurrentHash] = useState('')
+  const [currentDifficulty, setCurrentDifficulty] = useState('')
+  const [currentUserData, setCurrentUserData] = useState('')
+  const [currentNonce, setCurrentNonce] = useState('')
 
-  const isMiningClass = cx(baseClass, {
-    [`${baseClass}--mining`]: isMining
+  const mineStatusClass = cx(baseClass, {
+    [`${baseClass}--mined`]: isMined
   })
 
-  const handleMining = () => {
-    setIsMining(true)
-    setTimeout(mineValidHash, 1000)
-  }
-
-  const handleChange = evt => setUserDate(evt.target.value)
-
-  const mineValidHash = () => {
-    while (!currentHash.startsWith(currentDifficulty)) {
-      nonce++
-      currentHash = createHash()
+  useEffect(() => {
+    if (!isMined) {
+      setCurrentDifficulty(difficulty)
+      setCurrentPreviousHash(previousHash)
+      setCurrentCreationDate(setBlockCreationDate())
+      setCurrentId(id)
+      setCurrentNonce(nonce)
+      setCurrentHash(SHA256(id + currentUserData + nonce).toString())
     }
-    setCurrentNonce(nonce)
-    setTimeout(setIsMining(false), 1000)
+  }, [currentUserData, difficulty, hash, id, isMined, nonce, previousHash])
+
+  const handleUserData = evt => setCurrentUserData(evt.target.value)
+
+  const setBlockCreationDate = () => {
+    const creationDate = new Date()
+    return creationDate.toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    })
   }
 
-  const createHash = () =>
-    SHA256(blockId + creationDate + blockData + nonce).toString()
+  const handleSetBlock = async () => {
+    const blockData = {
+      id: currentId,
+      previousHash,
+      userData: currentUserData,
+      creationDate: setBlockCreationDate(),
+      difficulty,
+      nonce: currentNonce,
+      hash: currentHash,
+      isMined: true
+    }
+
+    await domain.get('set_block_use_case').execute({blockData})
+  }
 
   return (
-    <div className={isMiningClass}>
+    <div className={mineStatusClass}>
       <table>
         <thead>
           <tr>
-            <th className={`${baseClass}-heading`}>BLOCK #{blockId}</th>
+            <th className={`${baseClass}-heading`}>
+              BLOCK #{isMined ? id : currentId}
+            </th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td className={`${baseClass}-labelColumn`}>Creation date:</td>
-            <td className={`${baseClass}-labelData`}>{creationDate}</td>
+            <td className={`${baseClass}-labelData`}>
+              {isMined ? creationDate : currentCreationDate}
+            </td>
           </tr>
           <tr>
             <td className={`${baseClass}-labelColumn`}>Previous hash:</td>
-            <td className={`${baseClass}-labelData`}>{previousHash}</td>
+            <td className={`${baseClass}-labelData`}>
+              {isMined ? previousHash : currentPreviousHash}
+            </td>
           </tr>
           <tr>
             <td className={`${baseClass}-labelColumn`}>
               <label htmlFor="blockData">Block data:</label>
             </td>
             <td>
-              <textarea
-                id="blockData"
-                placeholder="type your data"
-                className={`${baseClass}-data`}
-                value={userData}
-                onChange={handleChange}
-              />
+              {isMined ? (
+                <input
+                  className={`${baseClass}-disabledData`}
+                  type="text"
+                  value={userData}
+                  disabled
+                />
+              ) : (
+                <textarea
+                  id="blockData"
+                  placeholder="type your data"
+                  className={`${baseClass}-data`}
+                  value={currentUserData}
+                  onChange={handleUserData}
+                />
+              )}
             </td>
           </tr>
           <tr>
-            <td className={`${baseClass}-labelColumn`}>Current hash:</td>
-            <td className={`${baseClass}-labelData`}>{hash}</td>
+            <td className={`${baseClass}-labelColumn`}>Block hash:</td>
+            <td className={`${baseClass}-labelData`}>
+              {isMined ? hash : currentHash}
+            </td>
           </tr>
           <tr>
             <td className={`${baseClass}-labelColumn`}>Nonce:</td>
-            <td className={`${baseClass}-labelData`}>{currentNonce}</td>
+            <td className={`${baseClass}-labelData`}>
+              {isMined ? nonce : currentNonce}
+            </td>
           </tr>
           <tr>
-            <td className={`${baseClass}-labelColumn`}>Current difficulty:</td>
-            <td className={`${baseClass}-labelData`}>{currentDifficulty}</td>
+            <td className={`${baseClass}-labelColumn`}>Difficulty:</td>
+            <td className={`${baseClass}-labelData`}>
+              {isMined ? difficulty : currentDifficulty}
+            </td>
           </tr>
         </tbody>
       </table>
 
-      <button className={`${baseClass}-button`} onClick={handleMining}>
-        Mine Block!
-      </button>
+      {!isMined && (
+        <button className={`${baseClass}-button`} onClick={handleSetBlock}>
+          Mine Block!
+        </button>
+      )}
     </div>
   )
 }
 
+Block.defaultProps = {
+  isMined: false
+}
+
 Block.propTypes = {
-  blockId: PropTypes.number,
+  id: PropTypes.number,
   previousHash: PropTypes.string,
   creationDate: PropTypes.string,
-  blockData: PropTypes.string,
-  currentDifficulty: PropTypes.string,
-  hash: PropTypes.string
+  userData: PropTypes.string,
+  difficulty: PropTypes.string,
+  nonce: PropTypes.number,
+  hash: PropTypes.string,
+  isMined: PropTypes.bool
 }
 
 export {Block}

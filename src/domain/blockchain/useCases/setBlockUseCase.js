@@ -1,4 +1,4 @@
-export class SetGenesisBlockUseCase {
+export class SetBlockUseCase {
   constructor({config, repository, blockRequestFactory}) {
     this._config = config
     this._repository = repository
@@ -6,10 +6,12 @@ export class SetGenesisBlockUseCase {
   }
 
   async execute({blockData}) {
-    await this._repository.setGenesisBlock({
-      genesisBlockData: this._blockRequestFactory({
+    const block = await this._repository.setBlock({
+      blockData: this._blockRequestFactory({
         blockData
       })
     })
+
+    return block
   }
 }

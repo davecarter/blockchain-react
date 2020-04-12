@@ -6,21 +6,25 @@ export class HttpBlockChainRepository {
   }
 
   getBlockChainData() {
-    const docRef = this._firestore.collection('blockchainreact')
-    return docRef.get().then(doc => {
-      const blocklist = []
-      doc.forEach(block => {
-        const blockData = block.data()
-        blocklist.push(blockData)
+    const collection = this._firestore.collection('blockchainreact')
+    return collection.get().then(querySnapshot => {
+      var blocklist = []
+      querySnapshot.forEach(doc => {
+        blocklist.push(doc.data())
       })
-
       return blocklist
     })
   }
 
-  setGenesisBlock({genesisBlockData}) {
-    const blockData = genesisBlockData.blockData()
-    const docRef = this._firestore.doc('blockchainreact/blockList')
-    return docRef.set({blockData}).then(doc => doc.id)
+  setBlock({blockData}) {
+    const block = blockData.value()
+    return this._firestore
+      .collection('blockchainreact')
+      .doc(`block-${block.id}`)
+      .set(block)
+      .then(() => {
+        window.console.log(`Added Block number ${block.id}`)
+        this.getBlockChainData()
+      })
   }
 }

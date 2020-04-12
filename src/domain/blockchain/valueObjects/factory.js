@@ -2,21 +2,25 @@ import {BlockValueObject} from './blockValueObject'
 
 export class BlockValueObjectsFactory {
   static blockValueObject = ({
-    blockId,
+    id,
     creationDate,
     previousHash,
-    blockData,
-    currentHash,
-    currentDifficulty
+    userData,
+    hash,
+    difficulty,
+    isMined,
+    nonce
   }) => {
-    BlockValueObject.validate({blockId, previousHash})
+    BlockValueObject.validate({id, previousHash})
     return new BlockValueObject({
-      blockId,
+      id,
       creationDate,
       previousHash,
-      blockData,
-      currentHash,
-      currentDifficulty
+      userData,
+      hash,
+      difficulty,
+      isMined,
+      nonce
     })
   }
 }

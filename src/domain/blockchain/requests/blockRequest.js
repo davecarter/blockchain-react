@@ -3,7 +3,7 @@ export class BlockRequest {
     this._blockData = blockData
   }
 
-  blockData() {
+  value() {
     return this._blockData
   }
 }

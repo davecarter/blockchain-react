@@ -1,62 +1,31 @@
 /* eslint-disable no-unused-vars */
-import React, {useState, useEffect} from 'react'
-import {domain} from '../../domain/index'
-import {config} from '../../domain/config'
+import React from 'react'
 import {Block} from '../block'
 
-const BlockChainList = () => {
-  const [blockChainData, setBlockChainData] = useState([])
-  const [genesisBlock, setGenesisBlock] = useState('')
-
-  const genesisBlockData = config.GENESIS_BLOCK
-
-  useEffect(() => {
-    const creationDate = new Date()
-    const localeDate = creationDate.toLocaleDateString('es-ES', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    })
-
-    const blockData = {
-      ...genesisBlockData,
-      creationDate: localeDate
-    }
-
-    domain
-      .get('get_blockchain_use_case')
-      .execute()
-      .then(data => {
-        setBlockChainData(data)
-        if (data.length === 0) {
-          domain
-            .get('set_genesis_block_use_case')
-            .execute({blockData})
-            .then(data => setGenesisBlock(data))
-        }
-      })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  return blockChainData.map(block => {
+const BlockChainList = ({blockChainList}) => {
+  return blockChainList?.reverse().map(blocklist => {
     const {
-      blockId,
+      id,
       previousHash,
-      blockData,
+      userData,
       creationDate,
-      currentDifficulty,
-      hash
-    } = block.blockData
+      difficulty,
+      hash,
+      isMined,
+      nonce
+    } = blocklist
 
     return (
-      <div key={blockId}>
+      <div key={id}>
         <Block
-          blockId={blockId}
+          id={id}
           previousHash={previousHash}
-          blockData={blockData}
+          userData={userData}
           creationDate={creationDate}
-          currentDifficulty={currentDifficulty}
+          difficulty={difficulty}
+          nonce={nonce}
           hash={hash}
+          isMined={isMined}
         />
       </div>
     )
