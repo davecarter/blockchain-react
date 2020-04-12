@@ -1,10 +1,11 @@
-import {FromApiResponseToBlockValueObjectMapper} from './fromApiResponseToBlockValueObjectMapper'
+import {FromRawBlockValueObjectToMinedBlockMapper} from './fromRawBlockValueObjectToMinedBlockMapper'
 import {BlockValueObjectsFactory} from '../valueObjects/factory'
 
 export class BlockMappersFactory {
-  static fromApiResponseToBlockValueObjectMapper = ({config}) =>
-    new FromApiResponseToBlockValueObjectMapper({
+  static fromRawBlockValueObjectToMinedBlockMapper = ({config, SHA256}) =>
+    new FromRawBlockValueObjectToMinedBlockMapper({
       config,
+      SHA256,
       blockValueObjectFactory: BlockValueObjectsFactory.blockValueObject
     })
 }
