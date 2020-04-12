@@ -31,13 +31,16 @@
     &Column {
       padding: 4px 0;
       vertical-align: top;
-      width: 20%;
+      width: 30%;
     }
 
     &Data {
+      max-width: 400px;
+      overflow: hidden;
       padding: 4px 0;
+      text-overflow: ellipsis;
       vertical-align: top;
-      width: 80%;
+      white-space: nowrap;
     }
   }
 
@@ -49,7 +52,10 @@
 
   &-disabledData {
     border: none;
-    background-color: transparent;
+    background-color: #def1fd;
+    padding: 8px;
+    font-weight: bold;
+    width: 100%;
   }
 
   &-button {
