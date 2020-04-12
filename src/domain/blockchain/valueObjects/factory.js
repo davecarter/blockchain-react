@@ -6,8 +6,10 @@ export class BlockValueObjectsFactory {
     creationDate,
     previousHash,
     userData,
-    currentHash,
-    currentDifficulty
+    hash,
+    difficulty,
+    isMined,
+    nonce
   }) => {
     BlockValueObject.validate({id, previousHash})
     return new BlockValueObject({
@@ -15,8 +17,10 @@ export class BlockValueObjectsFactory {
       creationDate,
       previousHash,
       userData,
-      currentHash,
-      currentDifficulty
+      hash,
+      difficulty,
+      isMined,
+      nonce
     })
   }
 }

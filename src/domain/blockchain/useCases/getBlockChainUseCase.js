@@ -6,6 +6,6 @@ export class GetBlockChainUseCase {
 
   async execute() {
     const blockChainData = await this._repository.getBlockChainData()
-    return blockChainData
+    return blockChainData || ['no data']
   }
 }
