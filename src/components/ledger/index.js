@@ -10,7 +10,7 @@ const Ledger = () => {
   const [blockChainList, setBlockChainList] = useState([])
 
   const [currentId, setCurrentId] = useState(0)
-  const [difficulty, setDifficulty] = useState('0000')
+  const [difficulty, setDifficulty] = useState('0')
   const [currentNonce, setCurrentNonce] = useState(20)
   const [lastBlockData, setLastBlockData] = useState({})
 
@@ -19,10 +19,15 @@ const Ledger = () => {
       .get('get_blockchain_use_case')
       .execute()
       .then(data => {
-        setBlockChainList(data)
-        setCurrentId(blockChainList.length + 1)
-        setCurrentNonce(config.GENESIS_BLOCK.nonce)
-        getPreviousBlock(data)
+        if (data.length !== 0) {
+          setBlockChainList(data)
+          setCurrentId(blockChainList.length)
+          setCurrentNonce(config.GENESIS_BLOCK.nonce)
+          setDifficulty(config.GENESIS_BLOCK.difficulty)
+          getPreviousBlock(data)
+        } else {
+          setBlockChainList([config.GENESIS_BLOCK])
+        }
       })
   }, [blockChainList.length])
 

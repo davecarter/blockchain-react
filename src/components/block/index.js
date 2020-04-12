@@ -51,7 +51,7 @@ const Block = ({
     })
   }
 
-  const handleSetBlock = async () => {
+  const handleMineBlock = async () => {
     const blockData = {
       id: currentId,
       previousHash,
@@ -59,11 +59,10 @@ const Block = ({
       creationDate: setBlockCreationDate(),
       difficulty,
       nonce: currentNonce,
-      hash: currentHash,
-      isMined: true
+      hash: currentHash
     }
 
-    await domain.get('set_block_use_case').execute({blockData})
+    await domain.get('mine_block_data_use_case').execute({blockData})
   }
 
   return (
@@ -134,7 +133,7 @@ const Block = ({
       </table>
 
       {!isMined && (
-        <button className={`${baseClass}-button`} onClick={handleSetBlock}>
+        <button className={`${baseClass}-button`} onClick={handleMineBlock}>
           Mine Block!
         </button>
       )}
