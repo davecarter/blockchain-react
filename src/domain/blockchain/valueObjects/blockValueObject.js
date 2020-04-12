@@ -20,8 +20,8 @@ export class BlockValueObject {
   }
 
   static validate({id, previousHash}) {
-    if (typeof id !== 'number') {
-      throw new Error('Invalid id, it *must* be a Number')
+    if (typeof id !== 'string') {
+      throw new Error('Invalid id, it *must* be a String')
     }
 
     if (typeof previousHash === 'undefined') {

@@ -17,7 +17,7 @@ const Block = ({
 }) => {
   const baseClass = 'block'
 
-  const [currentId, setCurrentId] = useState(0)
+  const [currentId, setCurrentId] = useState('0')
   const [currentPreviousHash, setCurrentPreviousHash] = useState('')
   const [currentCreationDate, setCurrentCreationDate] = useState('')
   const [currentHash, setCurrentHash] = useState('')
@@ -44,7 +44,7 @@ const Block = ({
 
   const setBlockCreationDate = () => {
     const creationDate = new Date()
-    return creationDate.toLocaleDateString('es-ES', {
+    return creationDate.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
@@ -70,7 +70,7 @@ const Block = ({
       <table>
         <thead>
           <tr>
-            <th className={`${baseClass}-heading`}>
+            <th colSpan="2" className={`${baseClass}-heading`}>
               BLOCK #{isMined ? id : currentId}
             </th>
           </tr>
@@ -146,7 +146,7 @@ Block.defaultProps = {
 }
 
 Block.propTypes = {
-  id: PropTypes.number,
+  id: PropTypes.string,
   previousHash: PropTypes.string,
   creationDate: PropTypes.string,
   userData: PropTypes.string,

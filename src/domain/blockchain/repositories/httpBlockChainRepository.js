@@ -5,6 +5,7 @@ export class HttpBlockChainRepository {
   }
 
   getBlockChainData() {
+    console.log('getting blockchain data')
     const collection = this._firestore.collection('blockchainreact')
     return collection.get().then(querySnapshot => {
       var blocklist = []
@@ -23,7 +24,6 @@ export class HttpBlockChainRepository {
       .set(block)
       .then(() => {
         window.console.log(`Added Block number ${block.id}`)
-        this.getBlockChainData()
       })
   }
 }

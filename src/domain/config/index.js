@@ -8,7 +8,7 @@ const LOCALE = {
 }
 
 const GENESIS_BLOCK = {
-  id: 0,
+  id: '000000',
   creationDate: Date.now(),
   difficulty: '0000',
   hash: '0',

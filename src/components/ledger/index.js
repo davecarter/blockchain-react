@@ -9,7 +9,7 @@ import {Block} from '../block'
 const Ledger = () => {
   const [blockChainList, setBlockChainList] = useState([])
 
-  const [currentId, setCurrentId] = useState(0)
+  const [currentId, setCurrentId] = useState('0')
   const [difficulty, setDifficulty] = useState('0')
   const [currentNonce, setCurrentNonce] = useState(20)
   const [lastBlockData, setLastBlockData] = useState({})
@@ -21,10 +21,12 @@ const Ledger = () => {
       .then(data => {
         if (data.length !== 0) {
           setBlockChainList(data)
-          setCurrentId(blockChainList.length)
           setCurrentNonce(config.GENESIS_BLOCK.nonce)
           setDifficulty(config.GENESIS_BLOCK.difficulty)
           getPreviousBlock(data)
+          const normalizeId = () =>
+            blockChainList.length.toString().padStart(6, '000000')
+          setCurrentId(normalizeId())
         } else {
           setBlockChainList([config.GENESIS_BLOCK])
         }
