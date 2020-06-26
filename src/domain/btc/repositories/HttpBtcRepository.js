@@ -1,4 +1,5 @@
 import {BtcRepository} from './BtcRepository'
+import axios from 'axios'
 
 export class HttpBtcRepository extends BtcRepository {
   constructor({config, mapper}) {
@@ -12,9 +13,11 @@ export class HttpBtcRepository extends BtcRepository {
     const fiatCurrencyCode = fiatCurrencyCodeVO.fiatCurrencyCode()
     const endPoint = `${API_URL_COINDESK}${fiatCurrencyCode}.json`
 
-    return window
-      .fetch(endPoint)
-      .then(response => response.json())
-      .then(data => this._mapper.setParams(fiatCurrencyCode).map(data))
+    return axios
+      .get(endPoint)
+      .then(response =>
+        this._mapper.setParams(fiatCurrencyCode).map(response.data)
+      )
+      .catch(error => window.console.error(error))
   }
 }
