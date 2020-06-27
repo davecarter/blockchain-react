@@ -1,27 +1,31 @@
 .homePage {
   &-Header {
-    background-color: darken($c-primary, $amount: 20);
+    background-color: black;
     display: flex;
     justify-content: space-between;
-    padding: 0 48px;
+    padding: 0 $p-xl;
+
+    @media screen and (min-width: $mq-medium) {
+      padding: 0 $p-xl * 2;
+    }
 
     &Title {
       color: white;
       font-size: $fz-small;
       font-weight: lighter;
       margin: 0;
-      padding: 8px;
+      padding: $p-s;
     }
 
     &Author {
       font-size: $fz-small;
-      color: lighten(#1da1f2, $amount: 30);
+      color: $c-accent;
       font-weight: bold;
       margin: 0;
-      padding: 8px;
+      padding: $p-s;
       text-decoration: none;
       &:hover {
-        color: lighten(#1da1f2, $amount: 40);
+        color: lighten($c-accent, 10%);
       }
     }
   }
