@@ -29,6 +29,10 @@ const Block = ({
     [`${baseClass}--mined`]: isMined
   })
 
+  const mineStatusClassLabelContainer = cx(`${baseClass}-labelContainer`, {
+    [`${baseClass}-labelContainer--mined`]: isMined
+  })
+
   useEffect(() => {
     if (!isMined) {
       setCurrentDifficulty(difficulty)
@@ -67,78 +71,75 @@ const Block = ({
   }
 
   return (
-    <div className={mineStatusClass}>
-      <table>
-        <thead>
-          <tr>
-            <th className={`${baseClass}-heading`}>
-              BLOCK #{isMined ? id : currentId}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td className={`${baseClass}-labelColumn`}>Creation date:</td>
-            <td className={`${baseClass}-labelData`}>
-              {isMined ? creationDate : currentCreationDate}
-            </td>
-          </tr>
-          <tr>
-            <td className={`${baseClass}-labelColumn`}>Previous hash:</td>
-            <td className={`${baseClass}-labelData`}>
-              {isMined ? previousHash : currentPreviousHash}
-            </td>
-          </tr>
-          <tr>
-            <td className={`${baseClass}-labelColumn`}>
-              <label htmlFor="blockData">Block data:</label>
-            </td>
-            <td>
-              {isMined ? (
-                <input
-                  className={`${baseClass}-disabledData`}
-                  type="text"
-                  value={userData}
-                  disabled
-                />
-              ) : (
-                <textarea
-                  id="blockData"
-                  placeholder="type your data"
-                  className={`${baseClass}-data`}
-                  value={currentUserData}
-                  onChange={handleUserData}
-                />
-              )}
-            </td>
-          </tr>
-          <tr>
-            <td className={`${baseClass}-labelColumn`}>Block hash:</td>
-            <td className={`${baseClass}-labelData`}>
-              {isMined ? hash : currentHash}
-            </td>
-          </tr>
-          <tr>
-            <td className={`${baseClass}-labelColumn`}>Nonce:</td>
-            <td className={`${baseClass}-labelData`}>
-              {isMined ? nonce : currentNonce}
-            </td>
-          </tr>
-          <tr>
-            <td className={`${baseClass}-labelColumn`}>Difficulty:</td>
-            <td className={`${baseClass}-labelData`}>
-              {isMined ? difficulty : currentDifficulty}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <section className={mineStatusClass}>
+      <h3 className={`${baseClass}-heading`}>
+        BLOCK #{isMined ? id : currentId}
+      </h3>
+      <div className={mineStatusClassLabelContainer}>
+        <span className={`${baseClass}-labelColumn`}>Creation date:</span>
+        <span className={`${baseClass}-labelData`}>
+          {isMined ? creationDate : currentCreationDate}
+        </span>
+      </div>
+      <div className={mineStatusClassLabelContainer}>
+        <span className={`${baseClass}-labelColumn`}>Previous hash:</span>
+        <span
+          className={`${baseClass}-labelData ${baseClass}-labelData--isHash`}
+        >
+          {isMined ? previousHash : currentPreviousHash}
+        </span>
+      </div>
+
+      <div className={`${baseClass}-blockDataContainer`}>
+        <label className={mineStatusClassLabelContainer} htmlFor="blockData">
+          Block data:
+        </label>
+        {isMined ? (
+          <input
+            className={`${baseClass}-disabledData`}
+            type="text"
+            value={userData}
+            disabled
+          />
+        ) : (
+          <textarea
+            id="blockData"
+            placeholder="type your data"
+            className={`${baseClass}-data`}
+            value={currentUserData}
+            onChange={handleUserData}
+          />
+        )}
+      </div>
+      <div className={mineStatusClassLabelContainer}>
+        <span className={`${baseClass}-labelColumn`}>Block hash:</span>
+        <span
+          className={`${baseClass}-labelData ${baseClass}-labelData--isHash`}
+        >
+          {isMined ? hash : currentHash}
+        </span>
+      </div>
+
+      <div className={mineStatusClassLabelContainer}>
+        <span className={`${baseClass}-labelColumn`}>Nonce:</span>
+        <span className={`${baseClass}-labelData`}>
+          {isMined ? nonce : currentNonce}
+        </span>
+      </div>
+
+      <div className={mineStatusClassLabelContainer}>
+        <span className={`${baseClass}-labelColumn`}>Difficulty:</span>
+        <span className={`${baseClass}-labelData`}>
+          {isMined ? difficulty : currentDifficulty}
+        </span>
+      </div>
 
       {!isMined && (
         <button className={`${baseClass}-button`} onClick={handleSetBlock}>
           Mine Block!
         </button>
       )}
-    </div>
+    </section>
   )
 }
 
