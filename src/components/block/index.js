@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react'
+import React, {useReducer, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
 
 import {SHA256} from 'crypto-js'
-import {domain} from '../../domain/index'
+// import {domain} from '../../domain/index'
 
 const Block = ({
   id,
@@ -13,17 +13,9 @@ const Block = ({
   hash,
   nonce,
   difficulty,
-  isMined
+  isMined = true
 }) => {
   const baseClass = 'block'
-
-  const [currentId, setCurrentId] = useState(0)
-  const [currentPreviousHash, setCurrentPreviousHash] = useState('')
-  const [currentCreationDate, setCurrentCreationDate] = useState('')
-  const [currentHash, setCurrentHash] = useState('')
-  const [currentDifficulty, setCurrentDifficulty] = useState('')
-  const [currentUserData, setCurrentUserData] = useState('')
-  const [currentNonce, setCurrentNonce] = useState('')
 
   const mineStatusClass = cx(baseClass, {
     [`${baseClass}--mined`]: isMined
@@ -33,18 +25,52 @@ const Block = ({
     [`${baseClass}-labelContainer--mined`]: isMined
   })
 
-  useEffect(() => {
-    if (!isMined) {
-      setCurrentDifficulty(difficulty)
-      setCurrentPreviousHash(previousHash)
-      setCurrentCreationDate(setBlockCreationDate())
-      setCurrentId(id)
-      setCurrentNonce(nonce)
-      setCurrentHash(SHA256(id + currentUserData + nonce).toString())
-    }
-  }, [currentUserData, difficulty, hash, id, isMined, nonce, previousHash])
+  const ACTIONS = {
+    UPDATE_USER_DATA: 'update_user_data',
+    UPDATE_HASH: 'update_hash',
+    UPDATE_CREATION_DATE: 'update_creation_date',
+    UPDATE_NONCE: 'update_nonce'
+  }
 
-  const handleUserData = evt => setCurrentUserData(evt.target.value)
+  const reducer = (state, action) => {
+    window.console.log('ACTION', action)
+    if (action.type === ACTIONS.UPDATE_USER_DATA) {
+      return {
+        ...state,
+        currentUserData: action.payload
+      }
+    }
+
+    if (action.type === ACTIONS.UPDATE_CREATION_DATE) {
+      return {
+        ...state,
+        currentCreationDate: action.payload
+      }
+    }
+
+    if (action.type === ACTIONS.UPDATE_HASH) {
+      return {
+        ...state,
+        currentHash: action.payload
+      }
+    }
+
+    if (action.type === ACTIONS.UPDATE_NONCE) {
+      return {
+        ...state,
+        currentNonce: action.payload
+      }
+    }
+
+    return {
+      ...state,
+      currentCreationDate,
+      currentHash,
+      minedStatus,
+      nonce,
+      currentUserData
+    }
+  }
 
   const setBlockCreationDate = () => {
     const creationDate = new Date()
@@ -55,38 +81,67 @@ const Block = ({
     })
   }
 
-  const handleSetBlock = async () => {
-    const blockData = {
-      id: currentId,
-      previousHash,
-      userData: currentUserData,
-      creationDate: setBlockCreationDate(),
-      difficulty,
-      nonce: currentNonce,
-      hash: currentHash,
-      isMined: true
+  const clearUserData = () =>
+    dispatch({type: ACTIONS.UPDATE_USER_DATA, payload: ''})
+
+  const handleUserData = evt => {
+    dispatch({type: ACTIONS.UPDATE_USER_DATA, payload: evt.target.value})
+    createHash()
+  }
+
+  const [state, dispatch] = useReducer(reducer, {
+    currentHash: hash,
+    currentCreationDate: creationDate,
+    minedStatus: isMined,
+    currentNonce: nonce,
+    currentUserData: 'Insert data'
+  })
+
+  const {
+    currentHash,
+    minedStatus,
+    currentNonce,
+    currentUserData,
+    currentCreationDate
+  } = state
+
+  useEffect(() => {
+    dispatch({
+      type: ACTIONS.UPDATE_CREATION_DATE,
+      payload: setBlockCreationDate()
+    })
+  }, [ACTIONS.UPDATE_CREATION_DATE])
+
+  const createHash = () => {
+    const hash = SHA256(id + currentUserData + nonce).toString()
+    dispatch({type: ACTIONS.UPDATE_HASH, payload: hash})
+    return hash
+  }
+
+  const mineValidHash = () => {
+    while (!hash.startsWith(difficulty)) {
+      nonce++
+      hash = createHash()
+      console.log('HASH:', hash)
     }
 
-    await domain.get('set_block_use_case').execute({blockData})
+    dispatch({type: ACTIONS.UPDATE_HASH, payload: hash})
+    dispatch({type: ACTIONS.UPDATE_NONCE, payload: nonce})
   }
 
   return (
     <section className={mineStatusClass}>
-      <h3 className={`${baseClass}-heading`}>
-        BLOCK #{isMined ? id : currentId}
-      </h3>
+      <h3 className={`${baseClass}-heading`}>BLOCK #{id}</h3>
       <div className={mineStatusClassLabelContainer}>
         <span className={`${baseClass}-labelColumn`}>Creation date:</span>
-        <span className={`${baseClass}-labelData`}>
-          {isMined ? creationDate : currentCreationDate}
-        </span>
+        <span className={`${baseClass}-labelData`}>{currentCreationDate}</span>
       </div>
       <div className={mineStatusClassLabelContainer}>
         <span className={`${baseClass}-labelColumn`}>Previous hash:</span>
         <span
           className={`${baseClass}-labelData ${baseClass}-labelData--isHash`}
         >
-          {isMined ? previousHash : currentPreviousHash}
+          {previousHash}
         </span>
       </div>
 
@@ -108,6 +163,7 @@ const Block = ({
             className={`${baseClass}-data`}
             value={currentUserData}
             onChange={handleUserData}
+            onFocus={clearUserData}
           />
         )}
       </div>
@@ -116,35 +172,27 @@ const Block = ({
         <span
           className={`${baseClass}-labelData ${baseClass}-labelData--isHash`}
         >
-          {isMined ? hash : currentHash}
+          {currentHash}
         </span>
       </div>
 
       <div className={mineStatusClassLabelContainer}>
         <span className={`${baseClass}-labelColumn`}>Nonce:</span>
-        <span className={`${baseClass}-labelData`}>
-          {isMined ? nonce : currentNonce}
-        </span>
+        <span className={`${baseClass}-labelData`}>{currentNonce}</span>
       </div>
 
       <div className={mineStatusClassLabelContainer}>
         <span className={`${baseClass}-labelColumn`}>Difficulty:</span>
-        <span className={`${baseClass}-labelData`}>
-          {isMined ? difficulty : currentDifficulty}
-        </span>
+        <span className={`${baseClass}-labelData`}>{difficulty}</span>
       </div>
 
       {!isMined && (
-        <button className={`${baseClass}-button`} onClick={handleSetBlock}>
+        <button className={`${baseClass}-button`} onClick={mineValidHash}>
           Mine Block!
         </button>
       )}
     </section>
   )
-}
-
-Block.defaultProps = {
-  isMined: false
 }
 
 Block.propTypes = {

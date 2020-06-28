@@ -2,8 +2,8 @@
 import React from 'react'
 import {Block} from '../block'
 
-const BlockChainList = ({blockChainList}) => {
-  return blockChainList?.reverse().map(blocklist => {
+const BlockChainList = ({blockChainList = []}) => {
+  return blockChainList?.map(blocklist => {
     const {
       id,
       previousHash,
