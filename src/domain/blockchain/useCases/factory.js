@@ -8,7 +8,7 @@ export class BlockUseCasesFactory {
   static getBlockChainUseCase = ({config}) =>
     new GetBlockChainUseCase({
       config,
-      repository: BlockChainRepositoryFactory.httpBlockChainRepository({
+      repository: BlockChainRepositoryFactory.localStorageRepository({
         config
       }),
       blockRequestFactory: BlockRequestsFactory.blockRequest
@@ -17,7 +17,7 @@ export class BlockUseCasesFactory {
   static setBlockUseCase = ({config}) =>
     new SetBlockUseCase({
       config,
-      repository: BlockChainRepositoryFactory.httpBlockChainRepository({
+      repository: BlockChainRepositoryFactory.localStorageRepository({
         config
       }),
       blockRequestFactory: BlockRequestsFactory.blockRequest
