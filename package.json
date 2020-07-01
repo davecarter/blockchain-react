@@ -9,7 +9,8 @@
     "co": "sui-mono commit",
     "now-build": "npm run build",
     "test": "jest",
-    "test:watch": "jest -w"
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "repository": {
     "type": "git",
