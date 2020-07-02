@@ -1,10 +1,8 @@
-/* eslint-disable no-undef */
 export default {
-  initializeApp: jest.fn(() => {}),
+  initializeApp: () => {},
   firestore: () => ({
     collection: () => ({
-      get: jest.fn(() => ({
-        forEach: () => {},
+      get: () => ({
         then: () => [
           {
             creationDate: 'April 13, 2020',
@@ -90,7 +88,7 @@ export default {
             userData: 'fsdfsdfsdfdfd'
           }
         ]
-      }))
+      })
     })
   })
 }
