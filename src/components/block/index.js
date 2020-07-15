@@ -122,7 +122,7 @@ const Block = ({
     while (!hash.startsWith(difficulty)) {
       nonce++
       hash = createHash()
-      console.log('HASH:', hash)
+      window.console.log('HASH:', hash)
     }
 
     dispatch({type: ACTIONS.UPDATE_HASH, payload: hash})
@@ -131,14 +131,19 @@ const Block = ({
 
   return (
     <section className={mineStatusClass}>
-      <h3 className={`${baseClass}-heading`}>BLOCK #{id}</h3>
+      <h3 data-testid="id" className={`${baseClass}-heading`}>
+        BLOCK #{id}
+      </h3>
       <div className={mineStatusClassLabelContainer}>
         <span className={`${baseClass}-labelColumn`}>Creation date:</span>
-        <span className={`${baseClass}-labelData`}>{currentCreationDate}</span>
+        <span data-testid="creationDate" className={`${baseClass}-labelData`}>
+          {isMined ? creationDate : currentCreationDate}
+        </span>
       </div>
       <div className={mineStatusClassLabelContainer}>
         <span className={`${baseClass}-labelColumn`}>Previous hash:</span>
         <span
+          data-testid="previousHash"
           className={`${baseClass}-labelData ${baseClass}-labelData--isHash`}
         >
           {previousHash}
@@ -151,6 +156,7 @@ const Block = ({
         </label>
         {isMined ? (
           <input
+            data-testid="minedBlockData"
             className={`${baseClass}-disabledData`}
             type="text"
             value={userData}
@@ -170,6 +176,7 @@ const Block = ({
       <div className={mineStatusClassLabelContainer}>
         <span className={`${baseClass}-labelColumn`}>Block hash:</span>
         <span
+          data-testid="hash"
           className={`${baseClass}-labelData ${baseClass}-labelData--isHash`}
         >
           {currentHash}
@@ -178,12 +185,16 @@ const Block = ({
 
       <div className={mineStatusClassLabelContainer}>
         <span className={`${baseClass}-labelColumn`}>Nonce:</span>
-        <span className={`${baseClass}-labelData`}>{currentNonce}</span>
+        <span data-testid="nonce" className={`${baseClass}-labelData`}>
+          {isMined ? nonce : currentNonce}
+        </span>
       </div>
 
       <div className={mineStatusClassLabelContainer}>
         <span className={`${baseClass}-labelColumn`}>Difficulty:</span>
-        <span className={`${baseClass}-labelData`}>{difficulty}</span>
+        <span data-testid="difficulty" className={`${baseClass}-labelData`}>
+          {difficulty}
+        </span>
       </div>
 
       {!isMined && (
