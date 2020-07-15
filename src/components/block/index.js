@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import cx from 'classnames'
 
 import {SHA256} from 'crypto-js'
-// import {domain} from '../../domain/index'
 
 const Block = ({
   id,
@@ -29,43 +28,50 @@ const Block = ({
     UPDATE_USER_DATA: 'update_user_data',
     UPDATE_HASH: 'update_hash',
     UPDATE_CREATION_DATE: 'update_creation_date',
-    UPDATE_NONCE: 'update_nonce'
+    UPDATE_NONCE: 'update_nonce',
+    UPDATE_MINED_STATUS: 'update_mined_status'
   }
 
   const reducer = (state, action) => {
     switch (action.type) {
-      case action.type === ACTIONS.UPDATE_USER_DATA:
+      case ACTIONS.UPDATE_USER_DATA:
         return {
           ...state,
           currentUserData: action.payload
         }
 
-      case action.type === ACTIONS.UPDATE_CREATION_DATE:
+      case ACTIONS.UPDATE_CREATION_DATE:
         return {
           ...state,
           currentCreationDate: action.payload
         }
 
-      case action.type === ACTIONS.UPDATE_HASH:
+      case ACTIONS.UPDATE_HASH:
         return {
           ...state,
           currentHash: action.payload
         }
 
-      case action.type === ACTIONS.UPDATE_NONCE:
+      case ACTIONS.UPDATE_NONCE:
         return {
           ...state,
           currentNonce: action.payload
         }
 
+      case ACTIONS.UPDATE_MINED_STATUS:
+        return {
+          ...state,
+          currentMinedStatus: action.payload
+        }
+
       default:
         return {
           ...state,
+          currentUserData,
           currentCreationDate,
           currentHash,
-          minedStatus,
-          nonce,
-          currentUserData
+          currentNonce,
+          currentMinedStatus
         }
     }
   }
@@ -79,8 +85,9 @@ const Block = ({
     })
   }
 
-  const clearUserData = () =>
+  const clearUserData = () => {
     dispatch({type: ACTIONS.UPDATE_USER_DATA, payload: ''})
+  }
 
   const handleUserData = evt => {
     dispatch({type: ACTIONS.UPDATE_USER_DATA, payload: evt.target.value})
@@ -90,17 +97,16 @@ const Block = ({
   const [state, dispatch] = useReducer(reducer, {
     currentHash: hash,
     currentCreationDate: creationDate,
-    minedStatus: isMined,
-    currentNonce: nonce,
-    currentUserData: 'Insert data'
+    currentMinedStatus: isMined,
+    currentNonce: nonce
   })
 
   const {
     currentHash,
-    minedStatus,
     currentNonce,
     currentUserData,
-    currentCreationDate
+    currentCreationDate,
+    currentMinedStatus
   } = state
 
   useEffect(() => {
@@ -125,6 +131,7 @@ const Block = ({
 
     dispatch({type: ACTIONS.UPDATE_HASH, payload: hash})
     dispatch({type: ACTIONS.UPDATE_NONCE, payload: nonce})
+    dispatch({type: ACTIONS.UPDATE_MINED_STATUS, payload: true})
   }
 
   return (
@@ -135,7 +142,7 @@ const Block = ({
       <div className={mineStatusClassLabelContainer}>
         <span className={`${baseClass}-labelColumn`}>Creation date:</span>
         <span data-testid="creationDate" className={`${baseClass}-labelData`}>
-          {isMined ? creationDate : currentCreationDate}
+          {currentMinedStatus ? creationDate : currentCreationDate}
         </span>
       </div>
       <div className={mineStatusClassLabelContainer}>
@@ -152,7 +159,7 @@ const Block = ({
         <label className={mineStatusClassLabelContainer} htmlFor="blockData">
           Block data:
         </label>
-        {isMined ? (
+        {currentMinedStatus ? (
           <input
             data-testid="minedBlockData"
             className={`${baseClass}-disabledData`}
@@ -184,7 +191,7 @@ const Block = ({
       <div className={mineStatusClassLabelContainer}>
         <span className={`${baseClass}-labelColumn`}>Nonce:</span>
         <span data-testid="nonce" className={`${baseClass}-labelData`}>
-          {isMined ? nonce : currentNonce}
+          {currentMinedStatus ? nonce : currentNonce}
         </span>
       </div>
 
@@ -195,7 +202,7 @@ const Block = ({
         </span>
       </div>
 
-      {!isMined && (
+      {!currentMinedStatus && (
         <button className={`${baseClass}-button`} onClick={mineValidHash}>
           Mine Block!
         </button>
