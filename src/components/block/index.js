@@ -33,42 +33,40 @@ const Block = ({
   }
 
   const reducer = (state, action) => {
-    window.console.log('ACTION', action)
-    if (action.type === ACTIONS.UPDATE_USER_DATA) {
-      return {
-        ...state,
-        currentUserData: action.payload
-      }
-    }
+    switch (action.type) {
+      case action.type === ACTIONS.UPDATE_USER_DATA:
+        return {
+          ...state,
+          currentUserData: action.payload
+        }
 
-    if (action.type === ACTIONS.UPDATE_CREATION_DATE) {
-      return {
-        ...state,
-        currentCreationDate: action.payload
-      }
-    }
+      case action.type === ACTIONS.UPDATE_CREATION_DATE:
+        return {
+          ...state,
+          currentCreationDate: action.payload
+        }
 
-    if (action.type === ACTIONS.UPDATE_HASH) {
-      return {
-        ...state,
-        currentHash: action.payload
-      }
-    }
+      case action.type === ACTIONS.UPDATE_HASH:
+        return {
+          ...state,
+          currentHash: action.payload
+        }
 
-    if (action.type === ACTIONS.UPDATE_NONCE) {
-      return {
-        ...state,
-        currentNonce: action.payload
-      }
-    }
+      case action.type === ACTIONS.UPDATE_NONCE:
+        return {
+          ...state,
+          currentNonce: action.payload
+        }
 
-    return {
-      ...state,
-      currentCreationDate,
-      currentHash,
-      minedStatus,
-      nonce,
-      currentUserData
+      default:
+        return {
+          ...state,
+          currentCreationDate,
+          currentHash,
+          minedStatus,
+          nonce,
+          currentUserData
+        }
     }
   }
 
