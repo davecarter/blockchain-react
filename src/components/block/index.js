@@ -9,20 +9,12 @@ const Block = ({
   creationDate,
   previousHash,
   userData,
-  hash,
+  hash = '0',
   nonce,
   difficulty,
-  isMined = true
+  minedStatus = true
 }) => {
   const baseClass = 'block'
-
-  const mineStatusClass = cx(baseClass, {
-    [`${baseClass}--mined`]: isMined
-  })
-
-  const mineStatusClassLabelContainer = cx(`${baseClass}-labelContainer`, {
-    [`${baseClass}-labelContainer--mined`]: isMined
-  })
 
   const ACTIONS = {
     UPDATE_USER_DATA: 'update_user_data',
@@ -97,7 +89,7 @@ const Block = ({
   const [state, dispatch] = useReducer(reducer, {
     currentHash: hash,
     currentCreationDate: creationDate,
-    currentMinedStatus: isMined,
+    currentMinedStatus: minedStatus,
     currentNonce: nonce
   })
 
@@ -108,6 +100,14 @@ const Block = ({
     currentCreationDate,
     currentMinedStatus
   } = state
+
+  const mineStatusClass = cx(baseClass, {
+    [`${baseClass}--mined`]: currentMinedStatus
+  })
+
+  const mineStatusClassLabelContainer = cx(`${baseClass}-labelContainer`, {
+    [`${baseClass}-labelContainer--mined`]: currentMinedStatus
+  })
 
   useEffect(() => {
     dispatch({
@@ -219,7 +219,7 @@ Block.propTypes = {
   difficulty: PropTypes.string,
   nonce: PropTypes.number,
   hash: PropTypes.string,
-  isMined: PropTypes.bool
+  minedStatus: PropTypes.bool
 }
 
 export {Block}

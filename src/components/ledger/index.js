@@ -9,7 +9,6 @@ const Ledger = () => {
   const [lastMinedBlock, setLastMinedBlock] = useState({
     lastId: 0,
     lastPreviousHash: '',
-    lastHash: '',
     lastDifficulty: '',
     lastNonce: 0
   })
@@ -37,23 +36,16 @@ const Ledger = () => {
     }
   }, [blockChainData])
 
-  const {
-    lastId,
-    lastPreviousHash,
-    lastHash,
-    lastDifficulty,
-    lastNonce
-  } = lastMinedBlock
+  const {lastId, lastPreviousHash, lastDifficulty, lastNonce} = lastMinedBlock
   return (
     <div>
       <h3 style={{textAlign: 'center'}}>Ledger Blockchain list</h3>
       <Block
         id={lastId}
         previousHash={lastPreviousHash}
-        hash={lastHash}
         difficulty={lastDifficulty}
         nonce={lastNonce}
-        isMined={false}
+        minedStatus={false}
       />
       <BlockChainList blockChainList={blockChainData} />
     </div>
