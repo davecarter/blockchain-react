@@ -1,9 +1,9 @@
 import {BlockMappersFactory} from '../mapper/factory'
-import {LocalStorageRepository} from './localStorageRepository'
+import {LocalRepository} from './localRepository'
 
 export class BlockChainRepositoryFactory {
-  static localStorageRepository = ({config}) => {
-    return new LocalStorageRepository({
+  static localRepository = ({config}) => {
+    return new LocalRepository({
       config,
       mapper: BlockMappersFactory.fromApiResponseToBlockValueObjectMapper({
         config
