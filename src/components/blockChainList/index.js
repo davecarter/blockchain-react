@@ -11,12 +11,12 @@ const BlockChainList = ({blockChainList = []}) => {
       creationDate,
       difficulty,
       hash,
-      isMined,
+      minedStatus,
       nonce
     } = blocklist
 
     return (
-      <div key={id}>
+      <div key={id + hash}>
         <Block
           id={id}
           previousHash={previousHash}
@@ -25,7 +25,7 @@ const BlockChainList = ({blockChainList = []}) => {
           difficulty={difficulty}
           nonce={nonce}
           hash={hash}
-          isMined={isMined}
+          minedStatus={minedStatus}
         />
       </div>
     )
