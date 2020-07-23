@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useReducer} from 'react'
 import {domain} from '../../domain/index'
 
 import {BlockChainList} from '../blockChainList'
@@ -6,12 +6,78 @@ import {Block} from '../block'
 
 const Ledger = () => {
   const [blockChainData, setBlockChainData] = useState([])
-  const [lastMinedBlock, setLastMinedBlock] = useState({
-    lastId: 0,
-    lastPreviousHash: '',
-    lastDifficulty: '',
-    lastNonce: 0
+  const [previousHash, setPreviousHash] = useState('')
+  const [creationDate, setCreationDate] = useState('')
+  const [difficulty, setDifficulty] = useState('')
+
+  const ACTIONS = {
+    UPDATE_USER_DATA: 'update_user_data',
+    UPDATE_HASH: 'update_hash',
+    UPDATE_CREATION_DATE: 'update_creation_date',
+    UPDATE_NONCE: 'update_nonce',
+    UPDATE_MINED_STATUS: 'update_mined_status'
+  }
+
+  const reducer = (state, action) => {
+    switch (action.type) {
+      case ACTIONS.UPDATE_USER_DATA:
+        return {
+          ...state,
+          currentUserData: action.payload
+        }
+
+      case ACTIONS.UPDATE_CREATION_DATE:
+        return {
+          ...state,
+          currentCreationDate: action.payload
+        }
+
+      case ACTIONS.UPDATE_HASH:
+        return {
+          ...state,
+          currentHash: action.payload
+        }
+
+      case ACTIONS.UPDATE_NONCE:
+        return {
+          ...state,
+          currentNonce: action.payload
+        }
+
+      case ACTIONS.UPDATE_MINED_STATUS:
+        return {
+          ...state,
+          currentMinedStatus: action.payload
+        }
+
+      default:
+        return {
+          ...state,
+          currentUserData,
+          currentCreationDate,
+          currentHash,
+          currentNonce,
+          currentMinedStatus
+        }
+    }
+  }
+
+  const [state, dispatch] = useReducer(reducer, {
+    currentHash: 'Type to cypher your data',
+    currentCreationDate: creationDate,
+    currentMinedStatus: false,
+    currentNonce: '0'
   })
+
+  const {
+    currentHash,
+    currentNonce,
+    currentUserData,
+    currentCreationDate,
+    currentMinedStatus
+  } = state
+
+  useEffect(() => setBlockCreationDate())
 
   useEffect(() => {
     domain
@@ -19,33 +85,63 @@ const Ledger = () => {
       .execute()
       .then(data => {
         setBlockChainData(data)
+        setPreviousHash(data[0].hash)
+        setDifficulty(data[0].difficulty)
       })
   }, [])
 
-  useEffect(() => {
-    if (blockChainData.length > 0) {
-      const {id, previousHash, difficulty, nonce} = blockChainData[
-        blockChainData.length - 1
-      ]
-      setLastMinedBlock({
-        lastId: id,
-        lastPreviousHash: previousHash,
-        lastDifficulty: difficulty,
-        lastNonce: nonce
-      })
-    }
-  }, [blockChainData])
+  const createHash = () => {
+    const hash = SHA256(id + currentUserData + currentNonce).toString()
+    dispatch({type: ACTIONS.UPDATE_HASH, payload: hash})
+    return hash
+  }
 
-  const {lastId, lastPreviousHash, lastDifficulty, lastNonce} = lastMinedBlock
+  const handleMiner = () => {
+    while (!hash.startsWith()) {
+      // eslint-disable-next-line no-const-assign
+      currentNonce++
+      hash = createHash()
+    }
+    dispatch({type: ACTIONS.UPDATE_NONCE, payload: nonce})
+    dispatch({type: ACTIONS.UPDATE_HASH, payload: hash})
+    dispatch({type: ACTIONS.UPDATE_MINED_STATUS, payload: true})
+  }
+
+  const clearUserData = () => {
+    dispatch({type: ACTIONS.UPDATE_USER_DATA, payload: ''})
+  }
+
+  const handleUserData = evt => {
+    createHash()
+    dispatch({type: ACTIONS.UPDATE_USER_DATA, payload: evt.target.value})
+  }
+
+  const setBlockCreationDate = () => {
+    const creationDate = new Date()
+    setCreationDate(
+      creationDate.toLocaleDateString('es-ES', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      })
+    )
+  }
+
   return (
     <div>
       <h3 style={{textAlign: 'center'}}>Ledger Blockchain list</h3>
       <Block
-        id={lastId}
-        previousHash={lastPreviousHash}
-        difficulty={lastDifficulty}
-        nonce={lastNonce}
-        minedStatus={false}
+        clearUserData={clearUserData}
+        creationDate={creationDate}
+        handleUserData={handleUserData}
+        userData={currentUserData}
+        id={0}
+        hash={currentHash}
+        previousHash={previousHash}
+        difficulty={difficulty}
+        nonce={currentNonce}
+        minedStatus={currentMinedStatus}
+        mineValidHash={handleMiner}
       />
       <BlockChainList blockChainList={blockChainData} />
     </div>
