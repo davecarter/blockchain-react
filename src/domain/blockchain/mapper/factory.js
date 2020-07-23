@@ -1,4 +1,5 @@
 import {FromApiResponseToBlockValueObjectMapper} from './fromApiResponseToBlockValueObjectMapper'
+import {FromBlockDataVOToMinedRawBlockMapper} from './fromBlockDataVOToMinedRawBlockMapper'
 import {BlockValueObjectsFactory} from '../valueObjects/factory'
 
 export class BlockMappersFactory {
@@ -7,4 +8,7 @@ export class BlockMappersFactory {
       config,
       blockValueObjectFactory: BlockValueObjectsFactory.blockValueObject
     })
+
+  static fromBlockDataVOToMinedRawBlockMapper = ({config}) =>
+    new FromBlockDataVOToMinedRawBlockMapper({config})
 }
