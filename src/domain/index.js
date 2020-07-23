@@ -1,4 +1,6 @@
 import {config} from './config'
+import {SHA256} from 'crypto-js'
+
 import {BtcUseCasesFactory} from './btc/useCases/factory'
 import {BlockUseCasesFactory} from './blockchain/useCases/factory'
 
@@ -8,6 +10,10 @@ const useCases = {
   }),
   get_blockchain_use_case: BlockUseCasesFactory.getBlockChainUseCase({
     config
+  }),
+  get_mined_block_data_use_case: BlockUseCasesFactory.getMinedBlockDataUseCase({
+    config,
+    SHA256
   })
 }
 
