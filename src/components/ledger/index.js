@@ -9,6 +9,7 @@ const Ledger = () => {
   const [previousHash, setPreviousHash] = useState('')
   const [creationDate, setCreationDate] = useState('')
   const [difficulty, setDifficulty] = useState('')
+  const [, setMinedBlockData] = useState({})
 
   const ACTIONS = {
     UPDATE_USER_DATA: 'update_user_data',
@@ -90,21 +91,19 @@ const Ledger = () => {
       })
   }, [])
 
-  const createHash = () => {
-    const hash = SHA256(id + currentUserData + currentNonce).toString()
-    dispatch({type: ACTIONS.UPDATE_HASH, payload: hash})
-    return hash
-  }
-
-  const handleMiner = () => {
-    while (!hash.startsWith()) {
-      // eslint-disable-next-line no-const-assign
-      currentNonce++
-      hash = createHash()
-    }
+  const updateCurrentBlock = () => {
     dispatch({type: ACTIONS.UPDATE_NONCE, payload: nonce})
     dispatch({type: ACTIONS.UPDATE_HASH, payload: hash})
     dispatch({type: ACTIONS.UPDATE_MINED_STATUS, payload: true})
+  }
+
+  const handleMiner = async () => {
+    updateCurrentBlock()
+    const minedBlockData = await domain
+      .get('get_mined_block_data_use_case')
+      .execute({id: '0', userData: currentUserData, creationDate, previousHash})
+
+    setMinedBlockData(minedBlockData)
   }
 
   const clearUserData = () => {
@@ -112,7 +111,6 @@ const Ledger = () => {
   }
 
   const handleUserData = evt => {
-    createHash()
     dispatch({type: ACTIONS.UPDATE_USER_DATA, payload: evt.target.value})
   }
 
