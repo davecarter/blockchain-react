@@ -6,10 +6,17 @@ export class GetMinedBlockDataUseCase {
   }
 
   execute({id, userData, creationDate, previousHash}) {
-    const minedBlockDataVO = this._mapper.map({
-      blockDataVO: this._blockData({id, userData, creationDate, previousHash})
+    const validHash = this._mapper.map({
+      blockDataVO: this._blockData({
+        id,
+        userData,
+        creationDate,
+        previousHash,
+        nonce: 0,
+        hash: '0'
+      })
     })
-    console.log(minedBlockDataVO.toJSON())
-    return minedBlockDataVO.toJSON()
+
+    return validHash
   }
 }

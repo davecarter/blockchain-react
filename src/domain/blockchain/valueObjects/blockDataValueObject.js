@@ -1,9 +1,11 @@
 export class BlockDataValueObject {
-  constructor({id, userData, creationDate, previousHash}) {
+  constructor({id, userData, creationDate, previousHash, nonce, hash}) {
     this._id = id
     this._userData = userData
     this._creationDate = creationDate
     this._previousHash = previousHash
+    this._nonce = nonce
+    this._hash = hash
   }
 
   static validate({id, previousHash, creationDate}) {
@@ -41,12 +43,21 @@ export class BlockDataValueObject {
     return this._previousHash
   }
 
+  nonce() {
+    return this._nonce
+  }
+
+  hash() {
+    return this._hash
+  }
+
   toJSON() {
     return {
       id: this.id(),
       userData: this.userData(),
       creationDate: this.creationDate(),
-      previousHash: this.previousHash()
+      previousHash: this.previousHash(),
+      nonce: this.nonce()
     }
   }
 }
