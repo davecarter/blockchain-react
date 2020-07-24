@@ -42,6 +42,11 @@
       "^.+\\.[jt]sx?$": "babel-jest"
     }
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test"
+    }
+  },
   "devDependencies": {
     "@babel/cli": "7.8.4",
     "@babel/core": "7.8.4",
@@ -61,6 +66,7 @@
     "css-loader": "3.4.2",
     "html-loader": "0.5.5",
     "html-webpack-plugin": "3.2.0",
+    "husky": "4.2.5",
     "jest": "26.0.1",
     "mini-css-extract-plugin": "0.4.1",
     "node-sass": "4.13.1",
