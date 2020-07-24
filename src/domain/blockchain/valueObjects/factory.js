@@ -29,9 +29,18 @@ export class BlockValueObjectsFactory {
     id,
     creationDate,
     previousHash,
-    userData
+    userData,
+    nonce,
+    hash
   }) => {
-    BlockDataValueObject.validate({id, creationDate, previousHash, userData})
-    return new BlockDataValueObject({id, creationDate, previousHash, userData})
+    BlockDataValueObject.validate({id, creationDate, previousHash})
+    return new BlockDataValueObject({
+      id,
+      creationDate,
+      previousHash,
+      userData,
+      nonce,
+      hash
+    })
   }
 }

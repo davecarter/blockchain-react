@@ -7,11 +7,12 @@ import {BlockChainRepositoryFactory} from '../repositories/factory'
 import {BlockMappersFactory} from '../mapper/factory'
 
 export class BlockUseCasesFactory {
-  static getBlockChainUseCase = ({config}) =>
+  static getBlockChainUseCase = ({config, fetcher}) =>
     new GetBlockChainUseCase({
       config,
       repository: BlockChainRepositoryFactory.localRepository({
-        config
+        config,
+        fetcher
       }),
       blockRequestFactory: BlockRequestsFactory.blockRequest
     })

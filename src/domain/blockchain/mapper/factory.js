@@ -9,6 +9,6 @@ export class BlockMappersFactory {
       blockValueObjectFactory: BlockValueObjectsFactory.blockValueObject
     })
 
-  static fromBlockDataVOToMinedRawBlockMapper = ({config}) =>
-    new FromBlockDataVOToMinedRawBlockMapper({config})
+  static fromBlockDataVOToMinedRawBlockMapper = ({config, SHA256}) =>
+    new FromBlockDataVOToMinedRawBlockMapper({config, SHA256})
 }

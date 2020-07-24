@@ -1,13 +1,13 @@
 export class LocalRepository {
-  constructor({config, mapper}) {
+  constructor({config, fetcher}) {
     this._config = config
-    this._mapper = mapper
+    this._fetcher = fetcher
   }
 
   getBlockChainData() {
-    return window
-      .fetch('http://localhost:3000/blocks')
-      .then(res => res.json())
-      .then(data => data)
+    return this._fetcher
+      .get('http://localhost:3000/blocks')
+      .then(response => response?.data)
+      .catch(error => window.console.error(error))
   }
 }
