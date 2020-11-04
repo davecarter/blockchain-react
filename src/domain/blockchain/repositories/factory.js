@@ -1,15 +1,14 @@
-import {HttpBlockChainRepository} from './httpBlockChainRepository'
 import {BlockMappersFactory} from '../mapper/factory'
-import {initializeFirebaseApp} from '../../initializeFirebaseApp'
+import {LocalRepository} from './localRepository'
 
 export class BlockChainRepositoryFactory {
-  static httpBlockChainRepository = ({config}) => {
-    return new HttpBlockChainRepository({
+  static localRepository = ({config, fetcher}) => {
+    return new LocalRepository({
       config,
       mapper: BlockMappersFactory.fromApiResponseToBlockValueObjectMapper({
         config
       }),
-      firestore: initializeFirebaseApp
+      fetcher
     })
   }
 }

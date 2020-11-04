@@ -1,5 +1,3 @@
-import {firebaseConfig} from './firebaseConfig'
-
 const LOCALE = {
   EUR: 'es-ES',
   USD: 'en-US',
@@ -10,7 +8,7 @@ const LOCALE = {
 const GENESIS_BLOCK = {
   id: 0,
   creationDate: Date.now(),
-  difficulty: '0000',
+  difficulty: '000',
   hash: '0',
   isMined: false,
   nonce: 1,
@@ -20,8 +18,7 @@ const GENESIS_BLOCK = {
 const config = {
   API_URL_COINDESK: 'https://api.coindesk.com/v1/bpi/currentprice/',
   LOCALE,
-  GENESIS_BLOCK,
-  FIREBASE: firebaseConfig
+  GENESIS_BLOCK
 }
 
 export {config}

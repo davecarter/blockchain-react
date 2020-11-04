@@ -1,11 +1,8 @@
-import {BtcRepository} from './BtcRepository'
-import axios from 'axios'
-
-export class HttpBtcRepository extends BtcRepository {
-  constructor({config, mapper}) {
-    super()
+export class HttpBtcRepository {
+  constructor({config, mapper, fetcher}) {
     this._config = config
     this._mapper = mapper
+    this._fetcher = fetcher
   }
 
   async getCurrentPrice({fiatCurrencyCodeVO}) {
@@ -13,7 +10,7 @@ export class HttpBtcRepository extends BtcRepository {
     const fiatCurrencyCode = fiatCurrencyCodeVO.fiatCurrencyCode()
     const endPoint = `${API_URL_COINDESK}${fiatCurrencyCode}.json`
 
-    return axios
+    return this._fetcher
       .get(endPoint)
       .then(response =>
         this._mapper.setParams(fiatCurrencyCode).map(response.data)

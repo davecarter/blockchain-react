@@ -1,25 +1,29 @@
 import {GetBlockChainUseCase} from './getBlockChainUseCase'
-import {SetBlockUseCase} from './setBlockUseCase'
+import {GetMinedBlockDataUseCase} from './getMinedBlockDataUseCase'
 
 import {BlockRequestsFactory} from '../requests/factory'
+import {BlockValueObjectsFactory} from '../valueObjects/factory'
 import {BlockChainRepositoryFactory} from '../repositories/factory'
+import {BlockMappersFactory} from '../mapper/factory'
 
 export class BlockUseCasesFactory {
-  static getBlockChainUseCase = ({config}) =>
+  static getBlockChainUseCase = ({config, fetcher}) =>
     new GetBlockChainUseCase({
       config,
-      repository: BlockChainRepositoryFactory.httpBlockChainRepository({
-        config
+      repository: BlockChainRepositoryFactory.localRepository({
+        config,
+        fetcher
       }),
       blockRequestFactory: BlockRequestsFactory.blockRequest
     })
 
-  static setBlockUseCase = ({config}) =>
-    new SetBlockUseCase({
+  static getMinedBlockDataUseCase = ({config, SHA256}) =>
+    new GetMinedBlockDataUseCase({
       config,
-      repository: BlockChainRepositoryFactory.httpBlockChainRepository({
-        config
+      mapper: BlockMappersFactory.fromBlockDataVOToMinedRawBlockMapper({
+        config,
+        SHA256
       }),
-      blockRequestFactory: BlockRequestsFactory.blockRequest
+      blockData: BlockValueObjectsFactory.blockDataValueObject
     })
 }

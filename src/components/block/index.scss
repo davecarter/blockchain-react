@@ -31,6 +31,16 @@
     cursor: pointer;
   }
 
+  &-blockData {
+    &Container {
+      > label {
+        background-color: $c-accent;
+        color: white;
+        margin: $m-m 0 0;
+      }
+    }
+  }
+
   &-label {
     &Container {
       background-color: lighten($c-bg-color-block, 3%);

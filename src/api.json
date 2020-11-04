@@ -1,0 +1,24 @@
+{
+  "blocks": [
+    { 
+      "creationDate": "July 16, 2020",
+      "difficulty": "00",
+      "hash": "0000qqqq2b96d4c12f4421711117f981547e9dfb484f987e7491543dd324b1e2",
+      "id": 0,
+      "minedStatus": true,
+      "nonce": 46169,
+      "previousHash": "0000e0ea2b96d4c12f4421711117f981547e9dfb484f987e7491543dd324b1e2",
+      "userData": "Mined User Data"
+    },
+    { 
+      "creationDate": "July 15, 2020",
+      "difficulty": "00",
+      "hash": "0000e0ea2b96d4c12f4421711117f981547e9dfb484f987e7491543dd324b1e2",
+      "id": 0,
+      "minedStatus": true,
+      "nonce": 123455,
+      "previousHash": "------- genesis block hash -------",
+      "userData": "Genesis Block Data"
+    }
+  ]
+}
