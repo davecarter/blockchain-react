@@ -57,7 +57,7 @@
     "@babel/preset-env": "7.8.7",
     "@babel/register": "7.10.3",
     "@babel/runtime": "7.8.4",
-    "@s-ui/lint": "3.14.0",
+    "@s-ui/lint": "3.47.0",
     "@testing-library/jest-dom": "5.11.0",
     "@testing-library/react": "10.4.6",
     "babel-jest": "26.1.0",
